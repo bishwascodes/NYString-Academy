@@ -32,13 +32,10 @@
                 $email         = get_field( 'email' );
                 $address       = get_field( 'address' );
                 $map_embed_code = get_field( 'map_embed_code' );
-                $icon          = get_field( 'icon' );
+              
         ?>
         <section class="location-item">
             <div class="abt-title">
-                <?php if ( $icon ) : ?>
-                    <span class="location-icon"><?php echo  $icon; ?></span>
-                <?php endif; ?>
                 <h2><?php the_title(); ?></h2>
             </div>
 
