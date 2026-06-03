@@ -506,7 +506,7 @@ ul {
     background-attachment: fixed;
 }
 .bg7 {
-    background-image: url(../images/bg/bg3.jpg);
+    background-image: url(../img/bg3.jpg);
     background-size: cover;
     background-position: center;
 }
@@ -6633,9 +6633,9 @@ input[type=checkbox], input[type=radio] {
 #pw_confirm fieldset .frm_input {background-color:#fff !important}
 #pw_confirm label {letter-spacing:-0.1em !important;}
 #pw_confirm_id {display:inline-block;margin-right:20px;font-weight:bold;}
-.mbskin .btn_confirm {} /* 서식단계 진행 */
+.mbskin .btn_confirm {} /* Processing form step */
 #reg_result .btn_confirm {margin:50px 0}
-.mbskin .btn_confirm {} /* 서식단계 진행 */
+.mbskin .btn_confirm {} /* Processing form step */
 
 strong.sound_only{
     padding-left:2px;
@@ -6672,7 +6672,7 @@ strong.sound_only{
 #bo_cate_ul li { float: left;  padding-right : 20px; font-size: 1.2em;}
 #bo_cate_on { font-weight: bold; }
 
-/* 게시물 선택복사 선택이동 */
+/* Copy/move selected posts */
 #copymove {}
 #copymove  .win_desc {text-align:center;display:block}
 #copymove  .tbl_wrap{margin:20px }
@@ -6680,7 +6680,7 @@ strong.sound_only{
 .copymove_current {float:right;background:#ff3061;padding:5px;color:#fff;border-radius:3px}
 .copymove_currentbg {background:#f4f4f4}
 
-/* 새창 기본 스타일 */
+/* New window default style */
 .new_win {position:relative;}
 .new_win .tbl_wrap {margin:0 20px}
 .new_win #win_title {font-size:1.25em;height:50px;line-height:30px;padding:10px 20px;background:#333;color:#fff;}
