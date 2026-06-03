@@ -23,10 +23,10 @@
             </div>
             <div class="col-lg-6 col-md-12">
                 <div class="abt-title">
-                    <h2>About us</h2>
+                    <h2><?php the_title(); ?></h2>
                 </div>
                 <div class="about-desc">
-
+                    <?php the_content(); ?>
                 </div>
             </div>
         </div>
