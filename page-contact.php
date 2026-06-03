@@ -37,7 +37,7 @@
         <section class="location-item">
             <div class="abt-title">
                 <?php if ( $icon ) : ?>
-                    <span class="location-icon"><?php echo esc_html( $icon ); ?></span>
+                    <span class="location-icon"><?php echo  $icon; ?></span>
                 <?php endif; ?>
                 <h2><?php the_title(); ?></h2>
             </div>
