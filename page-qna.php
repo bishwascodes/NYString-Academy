@@ -31,11 +31,14 @@
                         ?>
                         <div class="card">
                             <div class="card-header" id="<?php echo esc_attr( $faq_id ); ?>">
-                                <h3 class="acdn-title collapsed" data-toggle="collapse" data-target="#<?php echo esc_attr( $faq_id ); ?>-view" aria-expanded="false" aria-controls="<?php echo esc_attr( $faq_id ); ?>-view">
+                                <h3 class="acdn-title collapsed" data-toggle="collapse"
+                                    data-target="#<?php echo esc_attr( $faq_id ); ?>-view" aria-expanded="false"
+                                    aria-controls="<?php echo esc_attr( $faq_id ); ?>-view">
                                     <span><?php the_sub_field( 'heading' ); ?></span>
                                 </h3>
                             </div>
-                            <div id="<?php echo esc_attr( $faq_id ); ?>-view" class="collapse" aria-labelledby="<?php echo esc_attr( $faq_id ); ?>" data-parent="#accordion">
+                            <div id="<?php echo esc_attr( $faq_id ); ?>-view" class="collapse"
+                                aria-labelledby="<?php echo esc_attr( $faq_id ); ?>" data-parent="#accordion">
                                 <div class="card-body">
                                     <?php the_sub_field( 'content' ); ?>
                                 </div>
@@ -63,5 +66,15 @@
         </div>
     </div>
 </div>
+<script>
+jQuery(document).ready(function() {
+    jQuery(".nav-menu li a").on("click", function(e) {
+        jQuery(this).siblings(".sub-menu").addClass('open');
+    });
 
+    jQuery('body').on("click", function() {
+        jQuery(".sub-menu").removeClass('open');
+    });
+});
+</script>
 <?php get_footer(); ?>
