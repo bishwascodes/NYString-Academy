@@ -16,53 +16,46 @@
 <div class="sec-spacer">
     <div class="container">
 
-        <?php
-        $faq_column  = get_field( ‘faq_column’ );
-        $form_column = get_field( ‘form_column’ );
-        ?>
         <div class="row">
 
-            <?php if ( $faq_column ) : ?>
+            <?php if ( have_rows( ‘faq_column’ ) ) : ?>
             <div class="col-md-7">
                 <div class="course-syllabus">
-                    <?php if ( ! empty( $faq_column[‘faq_heading’] ) ) : ?>
-                    <h3 class="desc-title"><?php echo esc_html( $faq_column[‘faq_heading’] ); ?></h3>
-                    <?php endif; ?>
+                    <?php while ( have_rows( ‘faq_column’ ) ) : the_row(); ?>
+                    <h3 class="desc-title"><?php the_sub_field( ‘faq_heading’ ); ?></h3>
 
-                    <?php if ( ! empty( $faq_column[‘faq_item’] ) ) : ?>
+                    <?php if ( have_rows( ‘faq_item’ ) ) : ?>
                     <div id="accordion" class="rs-accordion-style1">
-                        <?php foreach ( $faq_column[‘faq_item’] as $index => $item ) :
-                            $faq_id = ‘faq-’ . $index;
+                        <?php $faq_index = 0; while ( have_rows( ‘faq_item’ ) ) : the_row();
+                            $faq_id = ‘faq-’ . $faq_index++;
                         ?>
                         <div class="card">
                             <div class="card-header" id="<?php echo esc_attr( $faq_id ); ?>">
                                 <h3 class="acdn-title collapsed" data-toggle="collapse" data-target="#<?php echo esc_attr( $faq_id ); ?>-view" aria-expanded="false" aria-controls="<?php echo esc_attr( $faq_id ); ?>-view">
-                                    <span><?php echo esc_html( $item[‘heading’] ); ?></span>
+                                    <span><?php the_sub_field( ‘heading’ ); ?></span>
                                 </h3>
                             </div>
                             <div id="<?php echo esc_attr( $faq_id ); ?>-view" class="collapse" aria-labelledby="<?php echo esc_attr( $faq_id ); ?>" data-parent="#accordion">
                                 <div class="card-body">
-                                    <?php echo wp_kses_post( $item[‘content’] ); ?>
+                                    <?php the_sub_field( ‘content’ ); ?>
                                 </div>
                             </div>
                         </div>
-                        <?php endforeach; ?>
+                        <?php endwhile; ?>
                     </div>
                     <?php endif; ?>
+                    <?php endwhile; ?>
                 </div>
             </div>
             <?php endif; ?>
 
-            <?php if ( $form_column ) : ?>
+            <?php if ( have_rows( ‘form_column’ ) ) : ?>
             <div class="col-md-5">
                 <div class="leave-comments-area">
-                    <?php if ( ! empty( $form_column[‘heading’] ) ) : ?>
-                    <h3 class="desc-title"><?php echo esc_html( $form_column[‘heading’] ); ?></h3>
-                    <?php endif; ?>
-
-                    <?php if ( ! empty( $form_column[‘form_shortcode’] ) ) : ?>
-                    <?php echo do_shortcode( $form_column[‘form_shortcode’] ); ?>
-                    <?php endif; ?>
+                    <?php while ( have_rows( ‘form_column’ ) ) : the_row(); ?>
+                    <h3 class="desc-title"><?php the_sub_field( ‘heading’ ); ?></h3>
+                    <?php echo do_shortcode( get_sub_field( ‘form_shortcode’ ) ); ?>
+                    <?php endwhile; ?>
                 </div>
             </div>
             <?php endif; ?>
