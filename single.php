@@ -1,4 +1,3 @@
-<?php /* Template Name: About Us Page */ ?>
 <?php get_header(); ?>
 
 <div class="rs-breadcrumbs bg7 breadcrumbs-overlay">
@@ -13,5 +12,68 @@
     </div>
 </div>
 
+<div class="sec-spacer rs-event-details">
+    <div class="container">
+
+<script src="https://www.nystringacademy.com:443/js/viewimageresize.js"></script>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="event-details-content">
+
+            <h3 class="event-title"><?php the_title(); ?></h3>
+            <div class="event-meta">
+                <div class="event-date">
+                    <i class="fa fa-calendar"></i>
+                    <span><?php the_date(); ?></span>
+                </div>
+                <div class="event-time">
+                    <i class="fa fa-user"></i>
+                    <span><span class="sv_member"><?php the_author(); ?></span></span>
+                </div>
+            </div>
+
+            <div class="event-img">
+                    <?php the_post_thumbnail(); ?>
+            </div>
+
+            <div class="event-desc">
+                       <?php the_content(); ?>
+                
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<?php the_posts_pagination(); ?>
+
+
+
+<script>
+function board_move(href)
+{
+    window.open(href, "boardmove", "left=50, top=50, width=500, height=550, scrollbars=1");
+}
+</script>
+
+<script>
+$(function() {
+    $("a.view_image").click(function() {
+        window.open(this.href, "large_image", "location=yes,links=no,toolbar=no,top=10,left=10,width=10,height=10,resizable=yes,scrollbars=no,status=no");
+        return false;
+    });
+
+
+    $("#bo_v_atc").viewimageresize();
+});
+
+</script>
+</div>
+</div>
 
 <?php get_footer(); ?>
