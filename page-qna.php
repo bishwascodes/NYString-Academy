@@ -66,15 +66,4 @@
         </div>
     </div>
 </div>
-<script>
-jQuery(document).ready(function() {
-    jQuery(".nav-menu li a").on("click", function(e) {
-        jQuery(this).siblings(".sub-menu").addClass('open');
-    });
-
-    jQuery('body').on("click", function() {
-        jQuery(".sub-menu").removeClass('open');
-    });
-});
-</script>
 <?php get_footer(); ?>
