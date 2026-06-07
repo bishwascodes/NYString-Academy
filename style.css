@@ -116,7 +116,7 @@ margin-inline:-15px;
 	display:grid;
 	place-content:center;
 }
-#rs-team-slider:hover .slick-arrow,.rs-courses:hover .slick-arrow{
+#rs-team-slider:hover .slick-arrow,.rs-courses:hover .slick-arrow, #rs-team-slider-inside-faculty-page:hover .slick-arrow{
 	opacity:1;
 }
 .owl-next{

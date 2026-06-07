@@ -1,7 +1,7 @@
 <?php /* Template Name: Faculty Page */ ?>
 <?php get_header(); ?>
 <style type="text/css">
-main-content .h2 {
+.main-content .h2 {
     font-size: 30px;
     line-height: normal;
     margin-bottom: 20px;
@@ -10,7 +10,7 @@ main-content .h2 {
     position: relative;
 }
 
-main-content h2:after {
+.main-content h2:after {
     content: "";
     position: absolute;
     left: 0;
