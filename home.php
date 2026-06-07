@@ -17,8 +17,8 @@ if($query->have_posts()) :
 
 <div id="rs-slider" class="slider-overlay-2">
     <div id="home-slider">
-		
-<?php
+
+        <?php
 while($query->have_posts()) :
     $query->the_post();
 
@@ -35,18 +35,17 @@ while($query->have_posts()) :
         <div class="item">
 
             <?php if($slide_image){ ?>
-                <img src="<?php echo esc_url($slide_image['url']); ?>"
-                     alt="<?php echo esc_attr($slide_image['alt']); ?>">
+            <img src="<?php echo esc_url($slide_image['url']); ?>" alt="<?php echo esc_attr($slide_image['alt']); ?>">
             <?php } ?>
 
             <div class="mid-sec">
 
                 <?php if($slider_title){ ?>
-                    <?php echo $slider_title; ?>
+                <?php echo $slider_title; ?>
                 <?php } ?>
 
                 <?php if($slide_content){ ?>
-                    <p><?php echo $slide_content; ?></p>
+                <p><?php echo $slide_content; ?></p>
                 <?php } ?>
 
                 <?php if($button_url){ 
@@ -54,13 +53,12 @@ while($query->have_posts()) :
                     $target = !empty($button_url['target']) ? $button_url['target'] : '_self';
                 ?>
 
-                    <a href="<?php echo esc_url($button_url['url']); ?>"
-                       target="<?php echo esc_attr($target); ?>"
-                       class="sl-get-started-btn">
+                <a href="<?php echo esc_url($button_url['url']); ?>" target="<?php echo esc_attr($target); ?>"
+                    class="sl-get-started-btn">
 
-                        <?php echo esc_html($button_url['title']); ?>
+                    <?php echo esc_html($button_url['title']); ?>
 
-                    </a>
+                </a>
 
                 <?php } ?>
 
@@ -68,23 +66,23 @@ while($query->have_posts()) :
 
         </div>
 
-<?php
+        <?php
     }
 
 endwhile;
 
 wp_reset_postdata();
 ?>
-		</div>
     </div>
+</div>
 <?php endif; ?>
 
 <!-- location-sec -->
 
 <div class="rs-services rs-services-style1">
-	<div class="container">
-		<div class="row">
-        <?php $location = get_field( 'location' ); 
+    <div class="container">
+        <div class="row">
+            <?php $location = get_field( 'location' ); 
 
         if( $location ) {
             foreach( $location as $post_item ) {
@@ -94,32 +92,34 @@ wp_reset_postdata();
         $icon=get_field('icon',$post_item->ID );
 
                 ?>
-                <div class="col-lg-6 col-md-6" style="cursor:pointer" id="<?php if($title =='Fort Lee'){ echo 'fort_div';} else{echo 'morris_div';} ?>">
-                    <div class="services-item <?php if($title =='Fort Lee'){ echo 'blue-color';} else{echo 'orange-color';} ?> rs-animation-hover">
-                        <?php if($icon){?>
-                        <div class="services-icon">
-                                <?php echo $icon; ?>
-                        </div>
-                        <?php } ?>
-                        <a class="services-desc" >
-                            <h4 class="services-title"><?php echo esc_html($title);?></h4>
-                            <?php if($phone){?>
-                            <p>
-                                <?php echo esc_html($phone); ?>
-                            </p>
-                            <?php } ?>
-                        </a>
+            <div class="col-lg-6 col-md-6" style="cursor:pointer"
+                id="<?php if($title =='Fort Lee'){ echo 'fort_div';} else{echo 'morris_div';} ?>">
+                <div
+                    class="services-item <?php if($title =='Fort Lee'){ echo 'blue-color';} else{echo 'orange-color';} ?> rs-animation-hover">
+                    <?php if($icon){?>
+                    <div class="services-icon">
+                        <?php echo $icon; ?>
                     </div>
+                    <?php } ?>
+                    <a class="services-desc">
+                        <h4 class="services-title"><?php echo esc_html($title);?></h4>
+                        <?php if($phone){?>
+                        <p>
+                            <?php echo esc_html($phone); ?>
+                        </p>
+                        <?php } ?>
+                    </a>
                 </div>
-                <?php
+            </div>
+            <?php
             }
         }
 ?>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 <!-- about-us-sec -->
- <div id="fortlee_view">
+<div id="fortlee_view">
 
     <div id="rs-about" class="rs-about sec-spacer fort_sec active">
         <div class="container">
@@ -129,10 +129,11 @@ wp_reset_postdata();
                     $about_image = get_field( 'about_image' );
                     if( $about_image ) {
                         ?>
-                        <div class="about-img">
-                            <img src="<?php echo esc_url( $about_image['url'] ); ?>" alt="<?php echo esc_attr( $about_image['alt'] ); ?>">
-                        </div>
-                        <?php
+                    <div class="about-img">
+                        <img src="<?php echo esc_url( $about_image['url'] ); ?>"
+                            alt="<?php echo esc_attr( $about_image['alt'] ); ?>">
+                    </div>
+                    <?php
                     }
                     ?>
 
@@ -144,7 +145,7 @@ wp_reset_postdata();
 
                         echo $about_title ;
                         ?>
-                    <?php 
+                        <?php 
                     $about_sub_title = get_field( 'about_sub_title' );
                     if( $about_sub_title ) {
                         ?>
@@ -172,7 +173,7 @@ wp_reset_postdata();
 
                         echo $about_title ;
                         ?>
-                    <?php 
+                        <?php 
                     $about_sub_title = get_field( 'about_morris_sub_title' );
                     if( $about_sub_title ) {
                         ?>
@@ -192,10 +193,11 @@ wp_reset_postdata();
                     $about_image = get_field( 'about_morris_image' );
                     if( $about_image ) {
                         ?>
-                        <div class="about-img">
-                            <img src="<?php echo esc_url( $about_image['url'] ); ?>" alt="<?php echo esc_attr( $about_image['alt'] ); ?>">
-                        </div>
-                        <?php
+                    <div class="about-img">
+                        <img src="<?php echo esc_url( $about_image['url'] ); ?>"
+                            alt="<?php echo esc_attr( $about_image['alt'] ); ?>">
+                    </div>
+                    <?php
                     }
                     ?>
 
@@ -207,51 +209,67 @@ wp_reset_postdata();
 
 </div>
 <!-- instruments-sec -->
- <?php
+<?php
  $instruments = get_field( 'instruments' );
 if( $instruments ) {
 ?>
 
-    <div id="rs-courses1" class="rs-courses ">
-        <div class="container">
-            <div class="sec-title mb-50 text-center">
+<div id="rs-courses1" class="rs-courses ">
+    <div class="container">
+        <div class="sec-title mb-50 text-center">
             <?php
             $program_title = get_field( 'program_title' );
             if( $program_title ) {
                 echo $program_title; // Already safe HTML from the editor
-            }?>            
-            </div>
-            <div class="row instrument_slider">
-                <?php     
+            }?>
+        </div>
+        <div class="row instrument_slider">
+            <?php     
                 foreach( $instruments as $post_item ) {
-                    ?>    
-                <div class="col-md-12">
+                    ?>
+            <div class="col-md-12">
 
-                    <div class="rs-carousel owl-carousel ">
-                    <div class="owl-item"><div class="cource-item blue-color">
-                        <div class="cource-img">
-                            <img src="<?php echo get_the_post_thumbnail_url($post_item->ID, 'medium'); ?>" alt="<?php echo esc_html( $post_item->post_title ); ?>">
-                            <a class="image-link" href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>" title="<?php echo esc_html( $post_item->post_title ); ?>">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#CC0000" width="30px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.975 14.51a1.05 1.05 0 0 0 0-1.485 2.95 2.95 0 0 1 0-4.172l3.536-3.535a2.95 2.95 0 1 1 4.172 4.172l-1.093 1.092a1.05 1.05 0 0 0 1.485 1.485l1.093-1.092a5.05 5.05 0 0 0-7.142-7.142L9.49 7.368a5.05 5.05 0 0 0 0 7.142c.41.41 1.075.41 1.485 0zm2.05-5.02a1.05 1.05 0 0 0 0 1.485 2.95 2.95 0 0 1 0 4.172l-3.5 3.5a2.95 2.95 0 1 1-4.171-4.172l1.025-1.025a1.05 1.05 0 0 0-1.485-1.485L3.87 12.99a5.05 5.05 0 0 0 7.142 7.142l3.5-3.5a5.05 5.05 0 0 0 0-7.142 1.05 1.05 0 0 0-1.485 0z" fill="#CC0000"></path></g></svg>
-                            </a>
-                        </div>
-                        <div class="course-body">
-                            <a href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>" class="course-category"><?php echo esc_html( $post_item->post_title ) ; ?></a>
-                            <h4 class="course-title"><a href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"><?php echo wp_trim_words(
+                <div class="rs-carousel owl-carousel ">
+                    <div class="owl-item">
+                        <div class="cource-item blue-color">
+                            <div class="cource-img">
+                                <img src="<?php echo get_the_post_thumbnail_url($post_item->ID, 'medium'); ?>"
+                                    alt="<?php echo esc_html( $post_item->post_title ); ?>">
+                                <a class="image-link" href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"
+                                    title="<?php echo esc_html( $post_item->post_title ); ?>">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        stroke="#CC0000" width="30px">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M10.975 14.51a1.05 1.05 0 0 0 0-1.485 2.95 2.95 0 0 1 0-4.172l3.536-3.535a2.95 2.95 0 1 1 4.172 4.172l-1.093 1.092a1.05 1.05 0 0 0 1.485 1.485l1.093-1.092a5.05 5.05 0 0 0-7.142-7.142L9.49 7.368a5.05 5.05 0 0 0 0 7.142c.41.41 1.075.41 1.485 0zm2.05-5.02a1.05 1.05 0 0 0 0 1.485 2.95 2.95 0 0 1 0 4.172l-3.5 3.5a2.95 2.95 0 1 1-4.171-4.172l1.025-1.025a1.05 1.05 0 0 0-1.485-1.485L3.87 12.99a5.05 5.05 0 0 0 7.142 7.142l3.5-3.5a5.05 5.05 0 0 0 0-7.142 1.05 1.05 0 0 0-1.485 0z"
+                                                fill="#CC0000"></path>
+                                        </g>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="course-body">
+                                <a href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"
+                                    class="course-category"><?php echo esc_html( $post_item->post_title ) ; ?></a>
+                                <h4 class="course-title"><a
+                                        href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"><?php echo wp_trim_words(
         get_the_excerpt($post_item->ID), 10); ?></a></h4>
+                            </div>
                         </div>
-                    </div></div>
-
                     </div>
+
                 </div>
-                <?php } ?>
             </div>
+            <?php } ?>
         </div>
     </div>
-    <?php } ?>
+</div>
+<?php } ?>
 <!-- blog-sec -->
 
- <?php
+<?php
 $post_type = 'blog';
 
 $args = array(
@@ -274,23 +292,23 @@ if($blog_query->have_posts()) :
     <div class="container">
 
         <div class="sec-title mb-50 text-center">
-                <?php $blog_title = get_field( 'blog_title' );
+            <?php $blog_title = get_field( 'blog_title' );
                 if( $blog_title ) {
                     echo $blog_title; // Already safe HTML from the editor
                 }
                 $blog_subtitle = get_field( 'blog_subtitle' );
                 if( $blog_subtitle ) {?>
-                <p class="">
-                    <?php echo esc_html( $blog_subtitle ); ?>
-                    </p>
-                    <?php }
+            <p class="">
+                <?php echo esc_html( $blog_subtitle ); ?>
+            </p>
+            <?php }
                     ?>
-			</p>
+            </p>
         </div>
 
         <div class="row">
 
-        <?php while($blog_query->have_posts()) : $blog_query->the_post();
+            <?php while($blog_query->have_posts()) : $blog_query->the_post();
 
             $title     = get_the_title();
             $permalink = get_permalink();
@@ -298,21 +316,22 @@ if($blog_query->have_posts()) :
             $posttitle = get_field('post_title');
         ?>
 
-        <div class="col-md-4" style="position:relative;">
+            <div class="col-md-4" style="position:relative;">
 
-            <div class="news_inner">
-                <a href="<?php echo esc_url($permalink); ?>">
-                    <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($title); ?>">
-                </a>
-            </div>
+                <div class="news_inner">
+                    <a href="<?php echo esc_url($permalink); ?>">
+                        <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($title); ?>">
+                    </a>
+                </div>
 
-            <div style="background-color:#efefef; padding:20px; text-align:center; height:88px; position:absolute;bottom:0; right:10px; width:calc(100% - 20px);">
+                <div
+                    style="background-color:#efefef; padding:20px; text-align:center; height:88px; position:absolute;bottom:0; right:10px; width:calc(100% - 20px);">
 
-                <h4 class="course-title" style="padding:0;margin:0">
+                    <h4 class="course-title" style="padding:0;margin:0">
 
-                    <a href="<?php echo esc_url($permalink); ?>" style="color:#222; font-weight:300;">
+                        <a href="<?php echo esc_url($permalink); ?>" style="color:#222; font-weight:300;">
 
-                        <?php
+                            <?php
                         if($posttitle){
                             echo esc_html($posttitle);
                         } else {
@@ -320,15 +339,15 @@ if($blog_query->have_posts()) :
                         }
                         ?>
 
-                    </a>
+                        </a>
 
-                </h4>
+                    </h4>
+
+                </div>
 
             </div>
 
-        </div>
-
-        <?php endwhile; ?>
+            <?php endwhile; ?>
 
         </div>
     </div>
@@ -336,14 +355,14 @@ if($blog_query->have_posts()) :
 
 <?php endif; wp_reset_postdata(); ?>
 <!-- video-sec -->
- <?php $image_url = get_field( 'image_url' ); 
+<?php $image_url = get_field( 'image_url' ); 
  $youtube_url = get_field( 'youtube_url' );
  if($image_url){ ?>
- <div id="rs-video" class="rs-video bg9" style="background-image:url(<?php echo esc_url( $image_url ) ?>)">
+<div id="rs-video" class="rs-video bg9" style="background-image:url(<?php echo esc_url( $image_url ) ?>)">
     <div class="container">
         <div class="video-content">
             <a class="popup-youtube" href="<?php echo esc_url($youtube_url); ?>" title="Video Icon">
-            <i class="fa fa-play"></i>
+                <i class="fa fa-play"></i>
             </a>
             <span>TAKE A VIDEO</span>
         </div>
@@ -365,9 +384,9 @@ if($faculty_query->have_posts()) :
 
 
 <div id="rs-team" class="rs-team sec-spacer">
-<div class="blue-overlay"></div>
-<div class="container">
-		<div class="sec-title mb-50 text-center">
+    <div class="blue-overlay"></div>
+    <div class="container">
+        <div class="sec-title mb-50 text-center">
             <?php
             $faculty_title = get_field( 'faculty_title' );
             if( $faculty_title ) {
@@ -376,16 +395,16 @@ if($faculty_query->have_posts()) :
             $faculty_subtitle = get_field( 'faculty_subtitle' );
             if( $faculty_subtitle ) {
                 ?>
-                <p class="">
-                    <?php echo esc_html( $faculty_subtitle ); ?>
-			</p>
-                <?php
+            <p class="">
+                <?php echo esc_html( $faculty_subtitle ); ?>
+            </p>
+            <?php
                 
             }
 ?>
-		</div>
-<div id="rs-team-slider">
-<?php
+        </div>
+        <div id="rs-team-slider">
+            <?php
 while($faculty_query->have_posts()) :
     $faculty_query->the_post();
 
@@ -399,107 +418,107 @@ while($faculty_query->have_posts()) :
         $img = get_the_post_thumbnail_url(get_the_ID(), 'medium');
 ?>
 
-    <div class="team-item">
+            <div class="team-item">
 
-        <div class="team-img">
+                <div class="team-img">
 
-            <?php if($img){ ?>
-                <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($title); ?>">
-            <?php } ?>
+                    <?php if($img){ ?>
+                    <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($title); ?>">
+                    <?php } ?>
 
-            <div class="normal-text">
+                    <div class="normal-text">
 
-                <h3 class="team-name"><?php echo esc_html($title); ?></h3>
-
-                    <?php
-                        
-                        if($instrument){
-                            ?>
-                            <p>
-                                <?php
-                            foreach($instrument as $post_item){
-       
-                            echo '<span>' . esc_html($post_item->post_title) . '</span>';
-
-                            }
-                           ?>
-                           </p>
-                           <?php 
-                        }
-                        
-                        ?>
-
-            </div>
-        </div>
-
-        <?php if($permalink){ ?>
-        <a href="<?php echo esc_url($permalink); ?>">
-        <?php } ?>
-
-            <div class="team-content">
-                <div class="overly-border"></div>
-                <div class="display-table">
-                    <div class="display-table-cell">
-
-                        <h3><?php echo esc_html($title); ?></h3>
+                        <h3 class="team-name"><?php echo esc_html($title); ?></h3>
 
                         <?php
                         
                         if($instrument){
                             ?>
-                            <p>
-                                <?php
+                        <p>
+                            <?php
                             foreach($instrument as $post_item){
        
                             echo '<span>' . esc_html($post_item->post_title) . '</span>';
 
                             }
                            ?>
-                           </p>
-                           <?php 
+                        </p>
+                        <?php 
                         }
                         
                         ?>
 
                     </div>
                 </div>
+
+                <?php if($permalink){ ?>
+                <a href="<?php echo esc_url($permalink); ?>">
+                    <?php } ?>
+
+                    <div class="team-content">
+                        <div class="overly-border"></div>
+                        <div class="display-table">
+                            <div class="display-table-cell">
+
+                                <h3><?php echo esc_html($title); ?></h3>
+
+                                <?php
+                        
+                        if($instrument){
+                            ?>
+                                <p>
+                                    <?php
+                            foreach($instrument as $post_item){
+       
+                            echo '<span>' . esc_html($post_item->post_title) . '</span>';
+
+                            }
+                           ?>
+                                </p>
+                                <?php 
+                        }
+                        
+                        ?>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php if($permalink){ ?>
+                </a>
+                <?php } ?>
+
             </div>
 
-        <?php if($permalink){ ?>
-        </a>
-        <?php } ?>
-
-    </div>
-
-<?php
+            <?php
     }
 
 endwhile;
 
 wp_reset_postdata();
 ?>
-</div>
-</div>
+        </div>
+    </div>
 </div>
 
 <?php endif; ?>
 <!-- instagram-sec -->
 <div class="rs-gallery-4 rs-gallery">
-	<div class="container">
-		<div class="sec-title mb-50 text-center">
-			<h2><span class="orange-color">Photo(Instagram)</span></h2>
-			<p class="">
-				Music Education For Your Kids
-			</p>
-		</div>
+    <div class="container">
+        <div class="sec-title mb-50 text-center">
+            <h2><span class="orange-color">Photo(Instagram)</span></h2>
+            <p class="">
+                Music Education For Your Kids
+            </p>
+        </div>
 
         <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
-<div class="elfsight-app-2abd21b1-6ab5-45d4-a849-63ab56eca408" data-elfsight-app-lazy></div>
+        <div class="elfsight-app-2abd21b1-6ab5-45d4-a849-63ab56eca408" data-elfsight-app-lazy></div>
 
-	</div>
+    </div>
 </div>
 <!-- news section -->
- <?php
+<?php
 $post_type = 'news';
 
 $args = array(
@@ -520,7 +539,7 @@ if($news_query->have_posts()) :
 <div id="rs-courses" class="rs-courses sec-spacer">
     <div class="container">
         <div class="sec-title mb-50 text-center">
-        <?php
+            <?php
         $news_title = get_field( 'news_title' );
 			$news_subtitle = get_field( 'news_subtitle' );
         if( $news_title ) {
@@ -533,13 +552,13 @@ if($news_query->have_posts()) :
 
             </p>
 
-    <?php
+            <?php
 }
 ?>
-        			
+
         </div>
         <div class="row">
-        <?php
+            <?php
         while($news_query->have_posts()) :
             $news_query->the_post();
 
@@ -549,17 +568,20 @@ if($news_query->have_posts()) :
                 $posttitle =get_field('post_title');
 			    
         ?>
-        <div class="col-md-4" style="position:relative;">
-            <div class="news_inner">
-                <a href="<?php echo $permalink; ?>"><img src="<?php echo $img; ?>" alt="<?php echo $title; ?>" title=""></a>
+            <div class="col-md-4" style="position:relative;">
+                <div class="news_inner">
+                    <a href="<?php echo $permalink; ?>"><img src="<?php echo $img; ?>" alt="<?php echo $title; ?>"
+                            title=""></a>
+                </div>
+                <div
+                    style="background-color:#efefef; padding:20px; ; text-align:center; height:88px; position:absolute;bottom:0; right:10px; width:calc(100% - 20px);">
+                    <h4 class="course-title" style="padding:0;margin:0"><a href="<?php echo $permalink; ?>"
+                            style="color:#222; font-weight:300;">
+                            <?php if($posttitle){echo esc_html($posttitle);}else{echo esc_html(title);} ?>
+                        </a></h4>
+                </div>
             </div>
-            <div style="background-color:#efefef; padding:20px; ; text-align:center; height:88px; position:absolute;bottom:0; right:10px; width:calc(100% - 20px);">
-                <h4 class="course-title" style="padding:0;margin:0"><a href="<?php echo $permalink; ?>" style="color:#222; font-weight:300;">
-                    <?php if($posttitle){echo esc_html($posttitle);}else{echo esc_html(title);} ?>
-                </a></h4>
-            </div>
-        </div>
-        <?php endwhile; ?>
+            <?php endwhile; ?>
 
 
         </div>
@@ -569,7 +591,7 @@ if($news_query->have_posts()) :
 <?php endif; wp_reset_postdata();?>
 
 <!-- homework reward section -->
- <?php
+<?php
 $post_type = 'homework_rewards';
 
 $args = array(
@@ -600,19 +622,19 @@ if($home_query->have_posts()) :
             $homework_reward_subtitle = get_field( 'homework_reward_subtitle' );
             if( $homework_reward_subtitle ) {
                 ?>
-                <p class="">
-                    <?php echo esc_html( $homework_reward_subtitle ); ?>
-                </p>
-                <?php
+            <p class="">
+                <?php echo esc_html( $homework_reward_subtitle ); ?>
+            </p>
+            <?php
                 
             }
             ?>
-			
+
         </div>
 
         <div class="row">
 
-        <?php while($home_query->have_posts()) : $home_query->the_post();
+            <?php while($home_query->have_posts()) : $home_query->the_post();
 
             $title     = get_the_title();
             $permalink = get_permalink();
@@ -620,21 +642,22 @@ if($home_query->have_posts()) :
             $posttitle = get_field('post_title');
         ?>
 
-        <div class="col-md-4" style="position:relative;">
+            <div class="col-md-4" style="position:relative;">
 
-            <div class="news_inner">
-                <a href="<?php echo esc_url($permalink); ?>">
-                    <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($title); ?>">
-                </a>
-            </div>
+                <div class="news_inner">
+                    <a href="<?php echo esc_url($permalink); ?>">
+                        <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($title); ?>">
+                    </a>
+                </div>
 
-            <div style="background-color:#efefef; padding:20px; text-align:center; height:88px; position:absolute;bottom:0; right:10px; width:calc(100% - 20px);">
+                <div
+                    style="background-color:#efefef; padding:20px; text-align:center; height:88px; position:absolute;bottom:0; right:10px; width:calc(100% - 20px);">
 
-                <h4 class="course-title" style="padding:0;margin:0">
+                    <h4 class="course-title" style="padding:0;margin:0">
 
-                    <a href="<?php echo esc_url($permalink); ?>" style="color:#222; font-weight:300;">
+                        <a href="<?php echo esc_url($permalink); ?>" style="color:#222; font-weight:300;">
 
-                        <?php
+                            <?php
                         if($posttitle){
                             echo esc_html($posttitle);
                         } else {
@@ -642,15 +665,15 @@ if($home_query->have_posts()) :
                         }
                         ?>
 
-                    </a>
+                        </a>
 
-                </h4>
+                    </h4>
+
+                </div>
 
             </div>
 
-        </div>
-
-        <?php endwhile; ?>
+            <?php endwhile; ?>
 
         </div>
     </div>

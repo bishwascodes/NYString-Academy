@@ -56,93 +56,128 @@ h2:after {
 
 
 
-<div id="rs-team" class="rs-team sec-spacer">
+<!-- faculty sec -->
 
+<?php
+$args = array(
+    'post_type' => 'faculty',
+    'posts_per_page' => -1
+);
+
+$faculty_query = new WP_Query($args);
+
+if($faculty_query->have_posts()) :
+?>
+
+
+<div id="rs-team" class="rs-team sec-spacer">
+    <div class="blue-overlay"></div>
     <div class="container">
         <div class="sec-title mb-50 text-center">
-            <h2><span class="orange-color">Our</span> Faculties</h2>
-            <p class="">
+           <h2><span class="orange-color">Our</span> Faculties</h2>
+           <p class="">
                 Best Education For Your Kids
-            </p>
+			</p>
         </div>
-
-        <div class="rs-carousel owl-carousel" data-loop="true" data-items="3" data-margin="30" data-autoplay="true"
-            data-autoplay-timeout="5000" data-smart-speed="1200" data-dots="true" data-nav="true" data-nav-speed="false"
-            data-mobile-device="1" data-mobile-device-nav="true" data-mobile-device-dots="true" data-ipad-device="2"
-            data-ipad-device-nav="true" data-ipad-device-dots="true" data-md-device="3" data-md-device-nav="true"
-            data-md-device-dots="true">
-
+        <div id="rs-team-slider">
             <?php
-    $faculty_query = new WP_Query( array(
-        'post_type'      => 'faculty',
-        'posts_per_page' => -1,
-        'post_status'    => 'publish',
-        'meta_query'     => array(
-            array(
-                'key'     => 'is_active',
-                'value'   => '1',
-                'compare' => '=',
-            ),
-        ),
-    ) );
+while($faculty_query->have_posts()) :
+    $faculty_query->the_post();
 
-    if ( $faculty_query->have_posts() ) :
-        while ( $faculty_query->have_posts() ) : $faculty_query->the_post();
-            $instruments     = get_field( 'instrument' );
-            $instrument_names = array();
-            if ( $instruments ) {
-                foreach ( $instruments as $instrument_post ) {
-                    $instrument_names[] = get_the_title( $instrument_post );
-                }
-            }
-            $instrument_label   = ! empty( $instrument_names ) ? implode( ', ', $instrument_names ) : '';
-            $brief_introduction = get_field( 'brief_introduction' );
-            $thumbnail_url      = get_the_post_thumbnail_url( get_the_ID(), 'medium' );
-            $faculty_url        = get_permalink();
-    ?>
+    $is_active = get_field('is_active');
+
+    if($is_active){
+
+        $instrument = get_field('instrument');
+        $title = get_the_title();
+        $permalink = get_permalink();
+        $img = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+?>
+
             <div class="team-item">
+
                 <div class="team-img">
-                    <?php if ( $thumbnail_url ) : ?>
-                    <img src="<?php echo esc_url( $thumbnail_url ); ?>" alt="<?php the_title_attribute(); ?>" />
-                    <?php endif; ?>
+
+                    <?php if($img){ ?>
+                    <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($title); ?>">
+                    <?php } ?>
+
                     <div class="normal-text">
-                        <h3 class="team-name"><?php the_title(); ?></h3>
-                        <?php if ( $instrument_label ) : ?>
-                        <span class="subtitle"><?php echo esc_html( $instrument_label ); ?></span>
-                        <?php endif; ?>
+
+                        <h3 class="team-name"><?php echo esc_html($title); ?></h3>
+
+                        <?php
+                        
+                        if($instrument){
+                            ?>
+                        <p>
+                            <?php
+                            foreach($instrument as $post_item){
+       
+                            echo '<span>' . esc_html($post_item->post_title) . '</span>';
+
+                            }
+                           ?>
+                        </p>
+                        <?php 
+                        }
+                        
+                        ?>
+
                     </div>
                 </div>
-                <a href="<?php echo esc_url( $faculty_url ); ?>">
+
+                <?php if($permalink){ ?>
+                <a href="<?php echo esc_url($permalink); ?>">
+                    <?php } ?>
+
                     <div class="team-content">
-                        <div class="overly-border">
-                        </div>
+                        <div class="overly-border"></div>
                         <div class="display-table">
                             <div class="display-table-cell">
-                                <h3 class="team-name"><a
-                                        href="<?php echo esc_url( $faculty_url ); ?>"><?php the_title(); ?></a></h3>
-                                <?php if ( $instrument_label ) : ?>
-                                <span class="team-title"><?php echo esc_html( $instrument_label ); ?></span>
-                                <?php endif; ?>
-                                <?php if ( $brief_introduction ) : ?>
-                                <p class="team-desc">
-                                    <?php echo wp_kses_post( $brief_introduction ); ?>
+
+                                <h3><?php echo esc_html($title); ?></h3>
+
+                                <?php
+                        
+                        if($instrument){
+                            ?>
+                                <p>
+                                    <?php
+                            foreach($instrument as $post_item){
+       
+                            echo '<span>' . esc_html($post_item->post_title) . '</span>';
+
+                            }
+                           ?>
                                 </p>
-                                <?php endif; ?>
+                                <?php 
+                        }
+                        
+                        ?>
+
                             </div>
                         </div>
                     </div>
-                </a>
-            </div>
-            <?php
-        endwhile;
-        wp_reset_postdata();
-    endif;
-    ?>
 
+                    <?php if($permalink){ ?>
+                </a>
+                <?php } ?>
+
+            </div>
+
+            <?php
+    }
+
+endwhile;
+
+wp_reset_postdata();
+?>
         </div>
     </div>
 </div>
 
+<?php endif; ?>
 
 
 <?php get_footer(); ?>
