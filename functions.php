@@ -34,7 +34,7 @@ function nystringacademy_enqueue_styles() {
     // Bootstrap JS (bundle includes Popper)
     wp_enqueue_script(
         'bootstrap-js',
-        '//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.jss',
+        '//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js',
         array(),
         '5.3.3',
         true
