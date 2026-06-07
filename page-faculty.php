@@ -1,7 +1,7 @@
 <?php /* Template Name: Faculty Page */ ?>
 <?php get_header(); ?>
 <style type="text/css">
-h2 {
+main-content .h2 {
     font-size: 30px;
     line-height: normal;
     margin-bottom: 20px;
@@ -10,7 +10,7 @@ h2 {
     position: relative;
 }
 
-h2:after {
+main-content h2:after {
     content: "";
     position: absolute;
     left: 0;
@@ -34,7 +34,7 @@ h2:after {
 </div>
 
 
-<div class="rs-history sec-spacer">
+<div class="rs-history sec-spacer main-content">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-12 mobile-mb-50">
