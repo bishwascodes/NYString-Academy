@@ -1,5 +1,25 @@
 <?php /* Template Name: Faculty Page */ ?>
 <?php get_header(); ?>
+<style type="text/css">
+h2 {
+    font-size: 30px;
+    line-height: normal;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    text-transform: uppercase;
+    position: relative;
+}
+
+h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+    width: 100px;
+    background-color: #ff3115;
+}
+</style>
 
 <div class="rs-breadcrumbs bg7 breadcrumbs-overlay">
     <div class="breadcrumbs-inner">
