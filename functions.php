@@ -21,11 +21,7 @@ function nystringacademy_enqueue_styles() {
             get_stylesheet_directory_uri() . '/css/slick.css',
             array()
         );
-          wp_enqueue_style(
-            'owl-style',
-            get_stylesheet_directory_uri() . '/css/owl-carousel.css',
-            array()
-        );
+        
         
          // Bootstrap CSS
     wp_enqueue_style(
