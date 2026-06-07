@@ -79,7 +79,7 @@ if($faculty_query->have_posts()) :
                 Best Education For Your Kids
 			</p>
         </div>
-        <div id="rs-team-slider">
+        <div id="rs-team-slider-inside-faculty-page">
             <?php
 while($faculty_query->have_posts()) :
     $faculty_query->the_post();
