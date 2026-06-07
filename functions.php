@@ -26,7 +26,7 @@ function nystringacademy_enqueue_styles() {
          // Bootstrap CSS
     wp_enqueue_style(
         'bootstrap-css',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+        '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
         array(),
         '5.3.3'
     );
@@ -34,14 +34,14 @@ function nystringacademy_enqueue_styles() {
     // Bootstrap JS (bundle includes Popper)
     wp_enqueue_script(
         'bootstrap-js',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+        '//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.jss',
         array(),
         '5.3.3',
         true
     );
     wp_enqueue_style(
         'fa',
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
+        '//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
         array(),
         null
     );
