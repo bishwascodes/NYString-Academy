@@ -14,7 +14,7 @@ function nystringacademy_enqueue_styles() {
         wp_enqueue_style(
             'child-custom-style',
             get_stylesheet_directory_uri() . '/css/customstyle.css',
-            array( 'parent-style', 'child-style', 'slick-style', 'bootstrap-css', 'fa' )
+            array( 'parent-style', 'child-style', 'slick-style', 'bootstrap-css', 'fa','generate-style' )
         );
          wp_enqueue_style(
             'slick-style',
