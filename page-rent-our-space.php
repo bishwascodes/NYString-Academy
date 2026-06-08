@@ -23,12 +23,12 @@
         ) );
         ?>
 
-        <div class="row" style="margin-bottom: 30px;">
+        <div class="row mb-4">
             <div class="col-md-12">
-                <ul id="rental-filter">
-                    <li><a href="#" class="rental-filter-btn active" data-filter="all">All</a></li>
+                <ul id="rental-filter" class="list-inline text-center">
+                    <li class="list-inline-item"><a href="#" class="rental-filter-btn btn btn-sm btn-primary active" data-filter="all">All</a></li>
                     <?php if ( ! is_wp_error( $rental_terms ) ) : foreach ( $rental_terms as $term ) : ?>
-                        <li><a href="#" class="rental-filter-btn" data-filter="<?php echo esc_attr( $term->slug ); ?>"><?php echo esc_html( $term->name ); ?></a></li>
+                        <li class="list-inline-item"><a href="#" class="rental-filter-btn btn btn-sm btn-outline-primary" data-filter="<?php echo esc_attr( $term->slug ); ?>"><?php echo esc_html( $term->name ); ?></a></li>
                     <?php endforeach; endif; ?>
                 </ul>
             </div>
@@ -42,38 +42,37 @@
         ) );
         ?>
 
-        <div class="row" id="rental-grid">
+        <div class="row g-4" id="rental-grid">
             <?php if ( $rental_query->have_posts() ) : while ( $rental_query->have_posts() ) : $rental_query->the_post();
                 $terms      = get_the_terms( get_the_ID(), 'rental-type' );
                 $term_slugs = ( ! is_wp_error( $terms ) && $terms ) ? implode( ' ', wp_list_pluck( $terms, 'slug' ) ) : '';
                 $first_term = ( ! is_wp_error( $terms ) && $terms ) ? reset( $terms ) : null;
             ?>
-                <div class="col-lg-4 col-md-6 grid-item" data-filter="<?php echo esc_attr( $term_slugs ); ?>">
-                    <div class="course-item">
-                        <div class="course-img" onclick="location.href='<?php the_permalink(); ?>'" style="cursor:pointer">
+                <div class="col-lg-4 col-md-6 grid-item mb-4" data-filter="<?php echo esc_attr( $term_slugs ); ?>">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="course-img position-relative overflow-hidden" onclick="location.href='<?php the_permalink(); ?>'" style="cursor:pointer">
                             <?php if ( has_post_thumbnail() ) : ?>
-                                <?php the_post_thumbnail( 'medium', array( 'alt' => get_the_title() ) ); ?>
+                                <?php the_post_thumbnail( 'medium', array( 'alt' => get_the_title(), 'class' => 'card-img-top w-100' ) ); ?>
                             <?php else : ?>
-                                <img src="<?php echo esc_url( get_template_directory_uri() . '/images/placeholder.jpg' ); ?>" alt="<?php the_title_attribute(); ?>">
+                                <img src="<?php echo esc_url( get_template_directory_uri() . '/images/placeholder.jpg' ); ?>" alt="<?php the_title_attribute(); ?>" class="card-img-top w-100">
                             <?php endif; ?>
                             <?php if ( $first_term ) : ?>
-                                <div class="course-toolbar">
-                                    <h4 class="course-category">
-                                        <a href="<?php echo esc_url( get_term_link( $first_term ) ); ?>"><?php echo esc_html( $first_term->name ); ?></a>
-                                    </h4>
-                                </div>
+                                <span class="badge bg-primary position-absolute top-0 start-0 m-2">
+                                    <?php echo esc_html( $first_term->name ); ?>
+                                </span>
                             <?php endif; ?>
                         </div>
-                        <div class="course-body">
-                            <div class="course-desc">
-                                <h4 class="course-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
-                                <p><?php echo wp_trim_words( get_the_excerpt(), 20, '&hellip;' ); ?></p>
-                            </div>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="<?php the_permalink(); ?>" class="text-dark text-decoration-none"><?php the_title(); ?></a>
+                            </h5>
+                            <p class="card-text text-muted small"><?php echo wp_trim_words( get_the_excerpt(), 20, '&hellip;' ); ?></p>
+                            <a href="<?php the_permalink(); ?>" class="btn btn-sm btn-outline-primary mt-auto">View Details</a>
                         </div>
                     </div>
                 </div>
             <?php endwhile; wp_reset_postdata(); else : ?>
-                <div class="col-md-12"><p>No rental spaces found.</p></div>
+                <div class="col-12"><p class="text-center text-muted">No rental spaces found.</p></div>
             <?php endif; ?>
         </div>
 
