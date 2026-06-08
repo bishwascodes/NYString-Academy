@@ -190,6 +190,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
+
     // Single Product Slick
     if ($('.single-product').length) {
         $('.single-product').slick({

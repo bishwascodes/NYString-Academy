@@ -227,41 +227,34 @@ if( $instruments ) {
             <?php     
                 foreach( $instruments as $post_item ) {
                     ?>
-            <div class="col-md-12">
 
-                <div class="rs-carousel owl-carousel ">
-                    <div class="owl-item">
-                        <div class="cource-item blue-color">
-                            <div class="cource-img">
-                                <img src="<?php echo get_the_post_thumbnail_url($post_item->ID, 'medium'); ?>"
-                                    alt="<?php echo esc_html( $post_item->post_title ); ?>">
-                                <a class="image-link" href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"
-                                    title="<?php echo esc_html( $post_item->post_title ); ?>">
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        stroke="#CC0000" width="30px">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                        </g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                d="M10.975 14.51a1.05 1.05 0 0 0 0-1.485 2.95 2.95 0 0 1 0-4.172l3.536-3.535a2.95 2.95 0 1 1 4.172 4.172l-1.093 1.092a1.05 1.05 0 0 0 1.485 1.485l1.093-1.092a5.05 5.05 0 0 0-7.142-7.142L9.49 7.368a5.05 5.05 0 0 0 0 7.142c.41.41 1.075.41 1.485 0zm2.05-5.02a1.05 1.05 0 0 0 0 1.485 2.95 2.95 0 0 1 0 4.172l-3.5 3.5a2.95 2.95 0 1 1-4.171-4.172l1.025-1.025a1.05 1.05 0 0 0-1.485-1.485L3.87 12.99a5.05 5.05 0 0 0 7.142 7.142l3.5-3.5a5.05 5.05 0 0 0 0-7.142 1.05 1.05 0 0 0-1.485 0z"
-                                                fill="#CC0000"></path>
-                                        </g>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="course-body">
-                                <a href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"
-                                    class="course-category"><?php echo esc_html( $post_item->post_title ) ; ?></a>
-                                <h4 class="course-title"><a
-                                        href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"><?php echo wp_trim_words(
+            <div class="cource-item blue-color">
+                <div class="cource-img">
+                    <img src="<?php echo get_the_post_thumbnail_url($post_item->ID, 'medium'); ?>"
+                        alt="<?php echo esc_html( $post_item->post_title ); ?>">
+                    <a class="image-link" href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"
+                        title="<?php echo esc_html( $post_item->post_title ); ?>">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#CC0000"
+                            width="30px">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                            </g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M10.975 14.51a1.05 1.05 0 0 0 0-1.485 2.95 2.95 0 0 1 0-4.172l3.536-3.535a2.95 2.95 0 1 1 4.172 4.172l-1.093 1.092a1.05 1.05 0 0 0 1.485 1.485l1.093-1.092a5.05 5.05 0 0 0-7.142-7.142L9.49 7.368a5.05 5.05 0 0 0 0 7.142c.41.41 1.075.41 1.485 0zm2.05-5.02a1.05 1.05 0 0 0 0 1.485 2.95 2.95 0 0 1 0 4.172l-3.5 3.5a2.95 2.95 0 1 1-4.171-4.172l1.025-1.025a1.05 1.05 0 0 0-1.485-1.485L3.87 12.99a5.05 5.05 0 0 0 7.142 7.142l3.5-3.5a5.05 5.05 0 0 0 0-7.142 1.05 1.05 0 0 0-1.485 0z"
+                                    fill="#CC0000"></path>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+                <div class="course-body">
+                    <a href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"
+                        class="course-category"><?php echo esc_html( $post_item->post_title ) ; ?></a>
+                    <h4 class="course-title"><a href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"><?php echo wp_trim_words(
         get_the_excerpt($post_item->ID), 10); ?></a></h4>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
             <?php } ?>
         </div>
     </div>
