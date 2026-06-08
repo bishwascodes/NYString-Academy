@@ -71,6 +71,16 @@ function load_custom_js() {
         true
     );
 
+    if ( is_single() ) {
+        wp_enqueue_script(
+            'viewimageresize',
+            get_stylesheet_directory_uri() . '/js/viewimageresize.js',
+            array('jquery'),
+            '1.0',
+            true
+        );
+    }
+
     wp_enqueue_script(
         'magnific-popup',
         '//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js',

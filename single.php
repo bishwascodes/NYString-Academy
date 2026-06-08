@@ -15,8 +15,6 @@
 <div class="sec-spacer rs-event-details">
     <div class="container">
 
-<script src="https://www.nystringacademy.com:443/js/viewimageresize.js"></script>
-
 <div class="row">
 
     <div class="col-md-12">
