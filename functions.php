@@ -114,6 +114,14 @@ function load_custom_js() {
         true
     );
 
+    wp_enqueue_script(
+        'rsmenu-main-js',
+        get_stylesheet_directory_uri() . '/js/rsmenu-main.js',
+        array('jquery'),
+        '1.0',
+        true
+    );
+
 }
 add_action('wp_enqueue_scripts', 'load_custom_js');
 
