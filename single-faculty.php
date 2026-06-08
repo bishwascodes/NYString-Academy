@@ -28,7 +28,7 @@ if ( ! get_field( 'is_active' ) ) {
                 <div class="team-photo mobile-mb-40">
 
                     <?php
-                    $img = get_the_post_thumbnail_url(get_the_ID(), ‘medium’);
+                    $img = get_the_post_thumbnail_url(get_the_ID(), 'medium');
                     if ($img) : ?>
                     <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
                     <?php endif; ?>
