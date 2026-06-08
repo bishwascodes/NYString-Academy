@@ -112,6 +112,15 @@ function load_custom_js() {
         true
     );
 
+       wp_enqueue_script(
+        'wow-js',
+        get_stylesheet_directory_uri() . '/js/wow.min.js',
+        array('jquery'),
+        '1.0',
+        true
+    );
+
+
     if ( is_single() ) {
         wp_enqueue_script(
             'viewimageresize',
