@@ -60,16 +60,14 @@ function board_move(href)
 </script>
 
 <script>
-$(function() {
+jQuery(function($) {
     $("a.view_image").click(function() {
         window.open(this.href, "large_image", "location=yes,links=no,toolbar=no,top=10,left=10,width=10,height=10,resizable=yes,scrollbars=no,status=no");
         return false;
     });
 
-
     $("#bo_v_atc").viewimageresize();
 });
-
 </script>
 </div>
 </div>
