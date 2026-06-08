@@ -39,7 +39,7 @@ if ( ! get_field( 'is_active' ) ) {
             </div>
             <div class="col-lg-8 col-md-12">
 
-                <?php $instrument = get_field(‘instrument’); ?>
+                <?php $instrument = get_field('instrument'); ?>
                 <?php if ($instrument) : ?>
                 <h4 class="desc-title">Instrument</h4>
                 <p style="display:block; border:1px solid #f1f1f1; padding:10px;">
@@ -49,16 +49,16 @@ if ( ! get_field( 'is_active' ) ) {
                 </p>
                 <?php endif; ?>
 
-                <?php if (have_rows(‘education’)) : ?>
+                <?php if (have_rows('education')) : ?>
                 <h4 class="desc-title">Education</h4>
                 <p style="display:block; border:1px solid #f1f1f1; padding:10px;">
-                    <?php while (have_rows(‘education’)) : the_row(); ?>
-                        <?php the_sub_field(‘degree’); ?><br>
+                    <?php while (have_rows('education')) : the_row(); ?>
+                        <?php the_sub_field('degree'); ?><br>
                     <?php endwhile; ?>
                 </p>
                 <?php endif; ?>
 
-                <?php $brief_introduction = get_field(‘brief_introduction’); ?>
+                <?php $brief_introduction = get_field('brief_introduction'); ?>
                 <?php if ($brief_introduction) : ?>
                 <h4 class="desc-title">About teacher</h4>
                 <p style="display:block; border:1px solid #f1f1f1; padding:10px;">
