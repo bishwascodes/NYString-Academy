@@ -37,14 +37,14 @@ function nystringacademy_enqueue_styles() {
             array()
         );
         wp_enqueue_style(
-            'responsive-style',
-            get_stylesheet_directory_uri() . '/css/responsive.css',
-            array()
-        );
-        wp_enqueue_style(
             'child-custom-style',
             get_stylesheet_directory_uri() . '/css/customstyle.css',
-            array( 'parent-style', 'child-style', 'slick-style', 'animate-style', 'rsmenu-main-style', 'rsmenu-transitions-style', 'off-canvas-style', 'responsive-style', 'bootstrap-css', 'fa', 'generate-style' )
+            array( 'parent-style', 'child-style', 'slick-style', 'animate-style', 'rsmenu-main-style', 'rsmenu-transitions-style', 'off-canvas-style', 'bootstrap-css', 'fa', 'generate-style' )
+        );
+        wp_enqueue_style(
+            'responsive-style',
+            get_stylesheet_directory_uri() . '/css/responsive.css',
+            array( 'child-custom-style' )
         );
         
         
