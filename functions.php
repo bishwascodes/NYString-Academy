@@ -12,14 +12,39 @@ function nystringacademy_enqueue_styles() {
             array('parent-style')
         );
         wp_enqueue_style(
-            'child-custom-style',
-            get_stylesheet_directory_uri() . '/css/customstyle.css',
-            array( 'parent-style', 'child-style', 'slick-style', 'bootstrap-css', 'fa','generate-style' )
-        );
-         wp_enqueue_style(
             'slick-style',
             get_stylesheet_directory_uri() . '/css/slick.css',
             array()
+        );
+        wp_enqueue_style(
+            'animate-style',
+            get_stylesheet_directory_uri() . '/css/animate.css',
+            array()
+        );
+        wp_enqueue_style(
+            'rsmenu-main-style',
+            get_stylesheet_directory_uri() . '/css/rsmenu-main.css',
+            array()
+        );
+        wp_enqueue_style(
+            'rsmenu-transitions-style',
+            get_stylesheet_directory_uri() . '/css/rsmenu-transitions.css',
+            array( 'rsmenu-main-style' )
+        );
+        wp_enqueue_style(
+            'off-canvas-style',
+            get_stylesheet_directory_uri() . '/css/off-canvas.css',
+            array()
+        );
+        wp_enqueue_style(
+            'responsive-style',
+            get_stylesheet_directory_uri() . '/css/responsive.css',
+            array()
+        );
+        wp_enqueue_style(
+            'child-custom-style',
+            get_stylesheet_directory_uri() . '/css/customstyle.css',
+            array( 'parent-style', 'child-style', 'slick-style', 'animate-style', 'rsmenu-main-style', 'rsmenu-transitions-style', 'off-canvas-style', 'responsive-style', 'bootstrap-css', 'fa', 'generate-style' )
         );
         
         
