@@ -50,7 +50,7 @@
 </div>
 
 
-<?php the_posts_pagination(); ?>
+<?php the_post_navigation(); ?>
 
 
 
