@@ -28,7 +28,7 @@ function nystringacademy_enqueue_styles() {
         );
 
         wp_enqueue_style(
-            'animate-style',
+            'owl-carousel',
             get_stylesheet_directory_uri() . '/css/owl-carousel.css',
             array()
         );
@@ -40,7 +40,7 @@ function nystringacademy_enqueue_styles() {
         );
 
         wp_enqueue_style(
-            'slick-style',
+            'magnific-style',
             get_stylesheet_directory_uri() . '/css/magnific-popup.css',
             array()
         );
@@ -65,10 +65,10 @@ function nystringacademy_enqueue_styles() {
 
         wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
         
-        wp_enqueue_style( 'child-style',
-            get_stylesheet_directory_uri() . '/style.css',
-            array('parent-style')
-        );
+        // wp_enqueue_style( 'child-style',
+        //     get_stylesheet_directory_uri() . '/style.css',
+        //     array('parent-style')
+        // );
 
         wp_enqueue_style(
             'child-custom-style',
@@ -96,7 +96,7 @@ function load_custom_js() {
         '5.3.3',
         true
     );
-    
+
     wp_enqueue_script(
         'owl-js',
         get_stylesheet_directory_uri() . '/js/owl-carousel-min.js',
