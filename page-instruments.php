@@ -30,9 +30,9 @@
                     <div class="card h-100 shadow-sm border-0">
                         <a href="<?php the_permalink(); ?>">
                             <?php if ( has_post_thumbnail() ) : ?>
-                                <?php the_post_thumbnail( 'medium', array( 'alt' => get_the_title(), 'class' => 'card-img-top w-100' ) ); ?>
+                                <?php the_post_thumbnail( 'medium', array( 'alt' => get_the_title(), 'class' => 'card-img-top w-100', 'style' => 'height:220px;object-fit:cover;' ) ); ?>
                             <?php else : ?>
-                                <img src="<?php echo esc_url( get_template_directory_uri() . '/images/placeholder.jpg' ); ?>" alt="<?php the_title_attribute(); ?>" class="card-img-top w-100">
+                                <img src="<?php echo esc_url( get_template_directory_uri() . '/images/placeholder.jpg' ); ?>" alt="<?php the_title_attribute(); ?>" class="card-img-top w-100" style="height:220px;object-fit:cover;">
                             <?php endif; ?>
                         </a>
                         <div class="card-body">
