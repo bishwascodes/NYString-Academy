@@ -12,6 +12,23 @@ jQuery(document).ready(function ($) {
     }
   });
 
+  // scrollTop init
+  var totop = $('#scrollUp');
+  if (totop.length) {
+    win.on('scroll', function () {
+      if (win.scrollTop() > 150) {
+        totop.fadeIn();
+      } else {
+        totop.fadeOut();
+      }
+    });
+    totop.on('click', function () {
+      $("html,body").animate({
+        scrollTop: 0
+      }, 500)
+    });
+  }
+
   if ($('#home-slider').length) {
     $('#home-slider').slick({
       slidesToShow: 1,
