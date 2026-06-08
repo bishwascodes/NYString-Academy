@@ -81,14 +81,14 @@
             <div class="main-menu">
                 <div class="row">
                     <div class="col-sm-12">
-                        <a class="rs-menu-toggle"><i class="fa fa-bars"></i></a>
-                        <!-- Navigation -->
-                        <nav class="rs-menu">
+                        <a class="rs-menu-toggle rs-menu-toggle-close"><i class="fa fa-bars"></i>Menu</a>
+                        <nav class="rs-menu rs-menu-close" style="height: 0px;">
                             <?php
                             wp_nav_menu([
                                 'theme_location' => 'primary',
                                 'container'      => false,
-                                'menu_class'     => 'menu'
+                                'menu_class'     => 'nav-menu',
+                                'walker'         => new NYS_Nav_Walker(),
                             ]);
                             ?>
                         </nav>

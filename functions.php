@@ -95,3 +95,5 @@ add_action('wp_enqueue_scripts', 'load_custom_js');
 /*
  * Your code goes below
  */
+
+require_once get_stylesheet_directory() . '/inc/nav-walker.php';
