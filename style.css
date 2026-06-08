@@ -212,16 +212,14 @@ padding-block:60px;
 
 
 #home-slider .item{
-	margin-inline:0 !important;
+	margin-inline:0!important;
 }
 .rs-header .rs-header-top .header-contact .widget-text{
     padding-left: 0 !important;
     display: flex;
     gap: 20px;
 }
-.rs-footer .footer-contact-desc{
-	background:#cc0000; !important;
-}
+
 .rs-about:not(.active){
 	display:none;
 }
