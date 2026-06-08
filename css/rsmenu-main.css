@@ -720,6 +720,7 @@ Version: 1.0.0
 		height: 55px;
 		line-height: 55px;
 		padding-right: 50px;
+		white-space: nowrap;
 	}
 	.home5 .sticky4 .rs-menu > ul > li:first-child a{
 		padding-left: 0;

@@ -219,7 +219,9 @@ padding-block:60px;
     display: flex;
     gap: 20px;
 }
-
+.rs-footer .footer-contact-desc{
+	background:#cc0000!important;
+}
 .rs-about:not(.active){
 	display:none;
 }
