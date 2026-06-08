@@ -9,14 +9,7 @@
 		var arrow_span = '<span class="rs-menu-parent">' + arrow_down + '</span>';
 		var close_button = '<div class="sub-menu-close"><i class="fa fa-times" aria-hidden="true"></i>Close</div>';
 
-		//Insert all arrow down span element
-		$('.nav-menu .rs-mega-menu').append(arrow_span);
-		$('.nav-menu > .menu-item-has-children').append(arrow_span);
-		$('.nav-menu > .menu-item-has-children .sub-menu > .menu-item-has-children').append(arrow_span);
-
-		//Insert all close button element
-		$('.nav-menu .menu-item-has-children .sub-menu').append(close_button);
-		$('.nav-menu .rs-mega-menu .mega-menu').append(close_button);
+		// Arrow spans and close buttons are injected server-side by NYS_Nav_Walker
 
 		/*-----------------------------------------------------------------------------------*/
 		/*	OPEN SUB MENU FUNCTION
