@@ -1,5 +1,17 @@
 jQuery(document).ready(function ($) {
 
+  // sticky menu
+  var header = $('.menu-sticky');
+  var win = $(window);
+  win.on('scroll', function () {
+    var scroll = win.scrollTop();
+    if (scroll < 300) {
+      header.removeClass("sticky");
+    } else {
+      header.addClass("sticky");
+    }
+  });
+
   if ($('#home-slider').length) {
     $('#home-slider').slick({
       slidesToShow: 1,

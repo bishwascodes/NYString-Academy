@@ -62,6 +62,12 @@
         </div>
     </div>
 
+	    <div class="footer-top">
+        <div class="container">
+
+        </div>
+    </div>
+
     <div class="footer-bottom">
         <div class="container">
             <div class="copyright">
@@ -74,7 +80,7 @@
 
 </footer>
 
-<div id="scrollUp" style="display: block;">
+<div id="scrollUp">
     <i class="fa fa-angle-up"></i>
 </div>
 
