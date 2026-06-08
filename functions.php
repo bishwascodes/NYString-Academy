@@ -73,14 +73,7 @@ function nystringacademy_enqueue_styles() {
 
 }
 function load_custom_js() {
-    wp_enqueue_script(
-        'custom-js',
-        get_stylesheet_directory_uri() . '/js/custom.js',
-        array('jquery'),   
-        '1.0',
-        true       
-    );
-
+   
     wp_enqueue_script(
         'owl-js',
         get_stylesheet_directory_uri() . '/js/owl-carousel-min.js',
@@ -120,6 +113,14 @@ function load_custom_js() {
         array('jquery'),
         '1.0',
         true
+    );
+
+     wp_enqueue_script(
+        'custom-js',
+        get_stylesheet_directory_uri() . '/js/custom.js',
+        array('jquery'),   
+        '1.0',
+        true       
     );
 
 }
