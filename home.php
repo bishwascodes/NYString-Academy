@@ -615,7 +615,7 @@ if($news_query->have_posts()) :
                     style="background-color:#efefef; padding:20px; ; text-align:center; height:88px; position:absolute;bottom:0; right:10px; width:calc(100% - 20px);">
                     <h4 class="course-title" style="padding:0;margin:0"><a href="<?php echo $permalink; ?>"
                             style="color:#222; font-weight:300;">
-                            <?php if($posttitle){echo esc_html($posttitle);}else{echo esc_html(title);} ?>
+                            <?php if($posttitle){echo esc_html($posttitle);}else{echo esc_html(get_the_title());} ?>
                         </a></h4>
                 </div>
             </div>
