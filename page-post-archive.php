@@ -20,7 +20,7 @@
         // 1. Get the post_type text field assigned to this page via ACF
         $page_post_type = get_field( 'post_type' );
 
-        // 2. Query programs whose post_type ACF text field matches this page's value
+        // 2. Query posts whose post_type ACF text field matches this page's value
         $query_args = array(
             'post_type'      => 'post',
             'posts_per_page' => -1,
@@ -36,12 +36,12 @@
             );
         }
 
-        $programs_query = new WP_Query( $query_args );
+        $posts_query = new WP_Query( $query_args );
 
         // 3. First pass — collect unique filter tabs from instrument relationship field
         $filter_tabs = array(); // filter_key => label
-        foreach ( $programs_query->posts as $program_post ) {
-            $instruments = get_field( 'instrument', $program_post->ID );
+        foreach ( $posts_query->posts as $post_item ) {
+            $instruments = get_field( 'instrument', $post_item->ID );
             if ( $instruments ) {
                 foreach ( $instruments as $inst ) {
                     $key = 'inst-' . $inst->ID;
@@ -50,29 +50,29 @@
                     }
                 }
             } else {
-                // No instrument assigned — use the program title as its own tab
-                $filter_tabs[ 'prog-' . $program_post->ID ] = get_the_title( $program_post->ID );
+                // No instrument assigned — use the post title as its own tab
+                $filter_tabs[ 'post-' . $post_item->ID ] = get_the_title( $post_item->ID );
             }
         }
         ?>
 
         <div class="row mb-4">
             <div class="col-md-12">
-                <ul id="program-filter" class="list-inline text-center">
+                <ul id="post-filter" class="list-inline text-center">
                     <li class="list-inline-item">
-                        <a href="#" class="program-filter-btn btn btn-sm btn-primary active" data-filter="all">All</a>
+                        <a href="#" class="post-filter-btn btn btn-sm btn-primary active" data-filter="all">All</a>
                     </li>
                     <?php foreach ( $filter_tabs as $key => $label ) : ?>
                         <li class="list-inline-item">
-                            <a href="#" class="program-filter-btn btn btn-sm btn-outline-primary" data-filter="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></a>
+                            <a href="#" class="post-filter-btn btn btn-sm btn-outline-primary" data-filter="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
             </div>
         </div>
 
-        <div class="row g-4" id="program-grid">
-            <?php if ( $programs_query->have_posts() ) : while ( $programs_query->have_posts() ) : $programs_query->the_post();
+        <div class="row g-4" id="post-grid">
+            <?php if ( $posts_query->have_posts() ) : while ( $posts_query->have_posts() ) : $posts_query->the_post();
                 $instruments = get_field( 'instrument' );
 
                 if ( $instruments ) {
@@ -81,7 +81,7 @@
                         $filter_keys[] = 'inst-' . $inst->ID;
                     }
                 } else {
-                    $filter_keys = array( 'prog-' . get_the_ID() );
+                    $filter_keys = array( 'post-' . get_the_ID() );
                 }
                 $filter_attr = implode( ' ', $filter_keys );
             ?>
@@ -111,7 +111,7 @@
                     </div>
                 </div>
             <?php endwhile; wp_reset_postdata(); else : ?>
-                <div class="col-12"><p class="text-center text-muted">No programs found.</p></div>
+                <div class="col-12"><p class="text-center text-muted">No posts found.</p></div>
             <?php endif; ?>
         </div>
 
@@ -120,8 +120,8 @@
 
 <script>
 (function () {
-    var btns  = document.querySelectorAll('.program-filter-btn');
-    var items = document.querySelectorAll('#program-grid .grid-item');
+    var btns  = document.querySelectorAll('.post-filter-btn');
+    var items = document.querySelectorAll('#post-grid .grid-item');
 
     btns.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
