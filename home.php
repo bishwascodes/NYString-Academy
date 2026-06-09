@@ -211,63 +211,86 @@ wp_reset_postdata();
 
 </div>
 <!-- programs-sec -->
- <style type="text/css">
-    .morris_programs, .fort_programs{
-        display:none;
-    }
-    .morris_programs.active, .fort_programs.active{
-        display:block;
-    }
-</style>
 <?php
 $home_locations = get_field( 'location' );
 if ( $home_locations ) :
-    // Pre-query programs per location before rendering
-    $location_programs = array();
+
+    // Build location metadata: ID → slug, div_id, card_color, title
+    $loc_meta = array();
     foreach ( $home_locations as $loc_post ) {
-        $location_programs[ $loc_post->ID ] = new WP_Query( array(
-            'post_type'      => 'program',
-            'posts_per_page' => -1,
-            'post_status'    => 'publish',
-            'meta_query'     => array(
-                array(
-                    'key'     => 'available_locations',
-                    'value'   => '"' . $loc_post->ID . '"',
-                    'compare' => 'LIKE',
-                ),
-            ),
-        ) );
+        $slug = sanitize_title( $loc_post->post_title );
+        $loc_meta[ $loc_post->ID ] = array(
+            'title'      => $loc_post->post_title,
+            'slug'       => $slug,
+            'div_id'     => ( $loc_post->post_title === 'Fort Lee' ) ? 'fort_div' : 'morris_div',
+            'card_color' => ( $loc_post->post_title === 'Fort Lee' ) ? 'blue-color' : 'orange-color',
+        );
     }
 
-    $is_first = true;
-    foreach ( $home_locations as $loc_post ) :
-        $loc_title    = $loc_post->post_title;
-        $is_fort_lee  = ( $loc_title === 'Fort Lee' );
-        $programs_cls = $is_fort_lee ? 'fort_programs' : 'morris_programs';
-        $card_color   = $is_fort_lee ? 'blue-color' : 'orange-color';
-        $active_cls   = $is_first ? ' active' : '';
-        $pq           = $location_programs[ $loc_post->ID ];
+    $first_slug = reset( $loc_meta )['slug'];
 
-        if ( ! $pq->have_posts() ) :
-            $is_first = false;
-            continue;
-        endif;
+    // Single query — fetch all programs belonging to any of the home page locations
+    $or_clauses = array( 'relation' => 'OR' );
+    foreach ( $home_locations as $loc_post ) {
+        $or_clauses[] = array(
+            'key'     => 'available_locations',
+            'value'   => '"' . $loc_post->ID . '"',
+            'compare' => 'LIKE',
+        );
+    }
+    $programs_query = new WP_Query( array(
+        'post_type'      => 'program',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'meta_query'     => $or_clauses,
+    ) );
 ?>
-<div class="rs-courses <?php echo esc_attr( $programs_cls . $active_cls ); ?>">
+
+<?php if ( $programs_query->have_posts() ) : ?>
+
+<style>
+.programs-section .cource-item { display: none; }
+.programs-section .loc-title    { display: none; }
+<?php foreach ( $loc_meta as $meta ) : $s = esc_attr( $meta['slug'] ); ?>
+.programs-section.active-<?php echo $s; ?> .cource-item.loc-<?php echo $s; ?> { display: block; }
+.programs-section.active-<?php echo $s; ?> .loc-title.loc-<?php echo $s; ?>    { display: block; }
+<?php endforeach; ?>
+</style>
+
+<div class="rs-courses programs-section active-<?php echo esc_attr( $first_slug ); ?>">
     <div class="container">
         <div class="sec-title mb-50 text-center">
-            <h2><span class="orange-color"><?php echo esc_html( $loc_title ); ?></span> Programs</h2>
+            <?php foreach ( $loc_meta as $meta ) : ?>
+            <h2 class="loc-title loc-<?php echo esc_attr( $meta['slug'] ); ?>">
+                <?php echo esc_html( $meta['title'] ); ?> Programs
+            </h2>
+            <?php endforeach; ?>
         </div>
         <div class="row instrument_slider">
-            <?php while ( $pq->have_posts() ) : $pq->the_post(); ?>
-            <div class="cource-item <?php echo esc_attr( $card_color ); ?>">
+            <?php while ( $programs_query->have_posts() ) : $programs_query->the_post();
+                $prog_locs     = get_field( 'available_locations' );
+                $loc_classes   = array();
+                $primary_color = '';
+
+                if ( $prog_locs ) {
+                    foreach ( $prog_locs as $prog_loc ) {
+                        if ( isset( $loc_meta[ $prog_loc->ID ] ) ) {
+                            $loc_classes[] = 'loc-' . $loc_meta[ $prog_loc->ID ]['slug'];
+                            if ( empty( $primary_color ) ) {
+                                $primary_color = $loc_meta[ $prog_loc->ID ]['card_color'];
+                            }
+                        }
+                    }
+                }
+
+                if ( empty( $loc_classes ) ) continue;
+            ?>
+            <div class="cource-item <?php echo esc_attr( $primary_color . ' ' . implode( ' ', $loc_classes ) ); ?>">
                 <div class="cource-img">
                     <img src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'medium' ) ); ?>"
                         alt="<?php the_title_attribute(); ?>">
-                    <a class="image-link" href="<?php the_permalink(); ?>"
-                        title="<?php the_title_attribute(); ?>">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#CC0000"
-                            width="30px">
+                    <a class="image-link" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#CC0000" width="30px">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
@@ -289,36 +312,34 @@ if ( $home_locations ) :
         </div>
     </div>
 </div>
-<?php
-        $is_first = false;
-    endforeach;
-endif;
-?>
 
 <script>
 (function () {
-    function togglePrograms(showCls, hideCls) {
-        var show = document.querySelectorAll('.' + showCls);
-        var hide = document.querySelectorAll('.' + hideCls);
-        show.forEach(function (el) { el.classList.add('active'); });
-        hide.forEach(function (el) { el.classList.remove('active'); });
-    }
+    var section  = document.querySelector('.programs-section');
+    var locMap   = <?php echo json_encode( array_combine(
+        array_column( $loc_meta, 'div_id' ),
+        array_column( $loc_meta, 'slug' )
+    ) ); ?>;
+    var allSlugs = <?php echo json_encode( array_values( array_column( $loc_meta, 'slug' ) ) ); ?>;
 
-    var fortDiv   = document.querySelector('#fort_div');
-    var morrisDiv = document.querySelector('#morris_div');
+    if ( ! section ) return;
 
-    if (fortDiv) {
-        fortDiv.addEventListener('click', function () {
-            togglePrograms('fort_programs', 'morris_programs');
-        });
-    }
-    if (morrisDiv) {
-        morrisDiv.addEventListener('click', function () {
-            togglePrograms('morris_programs', 'fort_programs');
-        });
-    }
+    Object.keys( locMap ).forEach( function ( divId ) {
+        var tab = document.querySelector( '#' + divId );
+        if ( ! tab ) return;
+
+        tab.addEventListener( 'click', function () {
+            var active = locMap[ divId ];
+            allSlugs.forEach( function ( slug ) {
+                section.classList.toggle( 'active-' + slug, slug === active );
+            } );
+        } );
+    } );
 }());
 </script>
+
+<?php endif; ?>
+<?php endif; ?>
 <!-- blog-sec -->
 
 <?php
