@@ -208,37 +208,58 @@ wp_reset_postdata();
     </div>
 
 </div>
-<!-- instruments-sec -->
+<!-- programs-sec -->
 <?php
- $instruments = get_field( 'instruments' );
-if( $instruments ) {
-?>
+$home_locations = get_field( 'location' );
+if ( $home_locations ) :
+    // Pre-query programs per location before rendering
+    $location_programs = array();
+    foreach ( $home_locations as $loc_post ) {
+        $location_programs[ $loc_post->ID ] = new WP_Query( array(
+            'post_type'      => 'program',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+            'meta_query'     => array(
+                array(
+                    'key'     => 'available_locations',
+                    'value'   => '"' . $loc_post->ID . '"',
+                    'compare' => 'LIKE',
+                ),
+            ),
+        ) );
+    }
 
-<div id="rs-courses1" class="rs-courses ">
+    $is_first = true;
+    foreach ( $home_locations as $loc_post ) :
+        $loc_title    = $loc_post->post_title;
+        $is_fort_lee  = ( $loc_title === 'Fort Lee' );
+        $programs_cls = $is_fort_lee ? 'fort_programs' : 'morris_programs';
+        $card_color   = $is_fort_lee ? 'blue-color' : 'orange-color';
+        $active_cls   = $is_first ? ' active' : '';
+        $pq           = $location_programs[ $loc_post->ID ];
+
+        if ( ! $pq->have_posts() ) :
+            $is_first = false;
+            continue;
+        endif;
+?>
+<div class="rs-courses <?php echo esc_attr( $programs_cls . $active_cls ); ?>">
     <div class="container">
         <div class="sec-title mb-50 text-center">
-            <?php
-            $program_title = get_field( 'program_title' );
-            if( $program_title ) {
-                echo $program_title; // Already safe HTML from the editor
-            }?>
+            <h2><?php echo esc_html( $loc_title ); ?> Programs</h2>
         </div>
         <div class="row instrument_slider">
-            <?php     
-                foreach( $instruments as $post_item ) {
-                    ?>
-
-            <div class="cource-item blue-color">
+            <?php while ( $pq->have_posts() ) : $pq->the_post(); ?>
+            <div class="cource-item <?php echo esc_attr( $card_color ); ?>">
                 <div class="cource-img">
-                    <img src="<?php echo get_the_post_thumbnail_url($post_item->ID, 'medium'); ?>"
-                        alt="<?php echo esc_html( $post_item->post_title ); ?>">
-                    <a class="image-link" href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"
-                        title="<?php echo esc_html( $post_item->post_title ); ?>">
+                    <img src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'medium' ) ); ?>"
+                        alt="<?php the_title_attribute(); ?>">
+                    <a class="image-link" href="<?php the_permalink(); ?>"
+                        title="<?php the_title_attribute(); ?>">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#CC0000"
                             width="30px">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                            </g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                     d="M10.975 14.51a1.05 1.05 0 0 0 0-1.485 2.95 2.95 0 0 1 0-4.172l3.536-3.535a2.95 2.95 0 1 1 4.172 4.172l-1.093 1.092a1.05 1.05 0 0 0 1.485 1.485l1.093-1.092a5.05 5.05 0 0 0-7.142-7.142L9.49 7.368a5.05 5.05 0 0 0 0 7.142c.41.41 1.075.41 1.485 0zm2.05-5.02a1.05 1.05 0 0 0 0 1.485 2.95 2.95 0 0 1 0 4.172l-3.5 3.5a2.95 2.95 0 1 1-4.171-4.172l1.025-1.025a1.05 1.05 0 0 0-1.485-1.485L3.87 12.99a5.05 5.05 0 0 0 7.142 7.142l3.5-3.5a5.05 5.05 0 0 0 0-7.142 1.05 1.05 0 0 0-1.485 0z"
@@ -248,18 +269,46 @@ if( $instruments ) {
                     </a>
                 </div>
                 <div class="course-body">
-                    <a href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"
-                        class="course-category"><?php echo esc_html( $post_item->post_title ) ; ?></a>
-                    <h4 class="course-title"><a href="<?php echo esc_url( get_permalink( $post_item->ID ) ); ?>"><?php echo wp_trim_words(
-        get_the_excerpt($post_item->ID), 10); ?></a></h4>
+                    <a href="<?php the_permalink(); ?>" class="course-category"><?php the_title(); ?></a>
+                    <h4 class="course-title">
+                        <a href="<?php the_permalink(); ?>"><?php echo wp_trim_words( get_the_excerpt(), 10 ); ?></a>
+                    </h4>
                 </div>
             </div>
-
-            <?php } ?>
+            <?php endwhile; wp_reset_postdata(); ?>
         </div>
     </div>
 </div>
-<?php } ?>
+<?php
+        $is_first = false;
+    endforeach;
+endif;
+?>
+
+<script>
+(function () {
+    function togglePrograms(showCls, hideCls) {
+        var show = document.querySelectorAll('.' + showCls);
+        var hide = document.querySelectorAll('.' + hideCls);
+        show.forEach(function (el) { el.classList.add('active'); });
+        hide.forEach(function (el) { el.classList.remove('active'); });
+    }
+
+    var fortDiv   = document.querySelector('#fort_div');
+    var morrisDiv = document.querySelector('#morris_div');
+
+    if (fortDiv) {
+        fortDiv.addEventListener('click', function () {
+            togglePrograms('fort_programs', 'morris_programs');
+        });
+    }
+    if (morrisDiv) {
+        morrisDiv.addEventListener('click', function () {
+            togglePrograms('morris_programs', 'fort_programs');
+        });
+    }
+}());
+</script>
 <!-- blog-sec -->
 
 <?php
