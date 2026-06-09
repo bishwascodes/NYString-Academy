@@ -30,7 +30,7 @@
                         </h4>
                         <?php } ?>
                         <p class="contact-desc">
-                            <? echo $address; ?>
+                            <?php echo $address; ?>
                         </p>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                         </h4>
                         <?php } ?>
                         <p class="contact-desc">
-                            <? echo $address; ?>
+                            <?php echo $address; ?>
                         </p>
                     </div>
                 </div>
