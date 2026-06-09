@@ -216,8 +216,9 @@ jQuery(document).ready(function ($) {
         });
     };
 
-    // Only init visible instrument sliders at page load — hidden ones are lazy-inited on show
-    $('.instrument_slider:visible').each(function () {
+    // Init all instrument sliders at page load — hidden sections use visibility:hidden so
+    // Slick can still read correct widths without needing lazy init on show
+    $('.instrument_slider').each(function () {
         window.initInstrumentSlider($(this));
     });
 

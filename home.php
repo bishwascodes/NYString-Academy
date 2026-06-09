@@ -212,8 +212,8 @@ wp_reset_postdata();
 </div>
 <!-- programs-sec -->
 <style>
-.programs-section-block          { display: none; }
-.programs-section-block.active   { display: block; }
+.programs-section-block          { visibility: hidden; height: 0; overflow: hidden; }
+.programs-section-block.active   { visibility: visible; height: auto; overflow: visible; }
 </style>
 
 <?php
@@ -298,12 +298,7 @@ jQuery(document).ready(function ($) {
     locData.forEach(function (loc) {
         $('#' + loc.divId).on('click', function () {
             $('.programs-section-block').removeClass('active');
-            var $section = $('#' + loc.sectionId);
-            $section.addClass('active');
-            // Lazy-init Slick on first show; setPosition if already initialized
-            if (typeof window.initInstrumentSlider === 'function') {
-                window.initInstrumentSlider($section.find('.instrument_slider'));
-            }
+            $('#' + loc.sectionId).addClass('active');
         });
     });
 });
