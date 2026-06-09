@@ -191,24 +191,35 @@ jQuery(document).ready(function ($) {
     }
 
     // Instrument Slider
-    if ($('.instrument_slider').length) {
-        $('.instrument_slider').slick({
+    // Exposed globally so home.php can lazy-init hidden sections on first show
+    window.initInstrumentSlider = function ($el) {
+        if ($el.hasClass('slick-initialized')) {
+            $el.slick('setPosition');
+            return;
+        }
+        var count = $el.children().length;
+        $el.slick({
             slidesToShow: 3,
             slidesToScroll: 1,
             autoplay: false,
             autoplaySpeed: 3000,
-            arrows: true,
+            arrows: count > 3,
             dots: false,
-            infinite: true,
+            infinite: count > 3,
             speed: 500,
             prevArrow: '<div class="owl-prev"><svg width="24px" height="24px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z" fill="#000000" /></svg></div>',
             nextArrow: '<div class="owl-next"><svg width="24px" height="24px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z" fill="#000000" /></svg></div>',
             responsive: [
-                { breakpoint: 980, settings: { slidesToShow: 2, slidesToScroll: 1, arrows: false } },
-                { breakpoint: 767, settings: { slidesToShow: 1, slidesToScroll: 1, arrows: false } }
+                { breakpoint: 980, settings: { slidesToShow: 2, slidesToScroll: 1, arrows: count > 2 } },
+                { breakpoint: 767, settings: { slidesToShow: 1, slidesToScroll: 1, arrows: count > 1 } }
             ]
         });
-    }
+    };
+
+    // Only init visible instrument sliders at page load — hidden ones are lazy-inited on show
+    $('.instrument_slider:visible').each(function () {
+        window.initInstrumentSlider($(this));
+    });
 
     // Single Product Slick
     if ($('.single-product').length) {

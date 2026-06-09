@@ -211,81 +211,56 @@ wp_reset_postdata();
 
 </div>
 <!-- programs-sec -->
+<style>
+.programs-section-block          { display: none; }
+.programs-section-block.active   { display: block; }
+</style>
+
 <?php
 $home_locations = get_field( 'location' );
 if ( $home_locations ) :
 
-    // Build location metadata: ID → slug, div_id, card_color, title
-    $loc_meta = array();
+    // Build per-location data and queries
+    $loc_data  = array();
+    $is_first  = true;
     foreach ( $home_locations as $loc_post ) {
         $slug = sanitize_title( $loc_post->post_title );
-        $loc_meta[ $loc_post->ID ] = array(
+
+        $pq = new WP_Query( array(
+            'post_type'      => 'program',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+            'meta_query'     => array( array(
+                'key'     => 'available_locations',
+                'value'   => '"' . $loc_post->ID . '"',
+                'compare' => 'LIKE',
+            ) ),
+        ) );
+
+        $loc_data[] = array(
             'title'      => $loc_post->post_title,
             'slug'       => $slug,
+            'section_id' => $slug . '-programs',
             'div_id'     => ( $loc_post->post_title === 'Fort Lee' ) ? 'fort_div' : 'morris_div',
             'card_color' => ( $loc_post->post_title === 'Fort Lee' ) ? 'blue-color' : 'orange-color',
+            'active'     => $is_first,
+            'query'      => $pq,
         );
+        $is_first = false;
     }
 
-    $first_slug = reset( $loc_meta )['slug'];
-
-    // Single query — fetch all programs belonging to any of the home page locations
-    $or_clauses = array( 'relation' => 'OR' );
-    foreach ( $home_locations as $loc_post ) {
-        $or_clauses[] = array(
-            'key'     => 'available_locations',
-            'value'   => '"' . $loc_post->ID . '"',
-            'compare' => 'LIKE',
-        );
-    }
-    $programs_query = new WP_Query( array(
-        'post_type'      => 'program',
-        'posts_per_page' => -1,
-        'post_status'    => 'publish',
-        'meta_query'     => $or_clauses,
-    ) );
+    foreach ( $loc_data as $loc ) :
+        if ( ! $loc['query']->have_posts() ) continue;
 ?>
-
-<?php if ( $programs_query->have_posts() ) : ?>
-
-<style>
-.programs-section .cource-item { display: none; }
-.programs-section .loc-title    { display: none; }
-<?php foreach ( $loc_meta as $meta ) : $s = esc_attr( $meta['slug'] ); ?>
-.programs-section.active-<?php echo $s; ?> .cource-item.loc-<?php echo $s; ?> { display: block; }
-.programs-section.active-<?php echo $s; ?> .loc-title.loc-<?php echo $s; ?>    { display: block; }
-<?php endforeach; ?>
-</style>
-
-<div class="rs-courses programs-section active-<?php echo esc_attr( $first_slug ); ?>">
+<div class="rs-courses programs-section-block<?php echo $loc['active'] ? ' active' : ''; ?>"
+     id="<?php echo esc_attr( $loc['section_id'] ); ?>">
     <div class="container">
         <div class="sec-title mb-50 text-center">
-            <?php foreach ( $loc_meta as $meta ) : ?>
-            <h2 class="loc-title loc-<?php echo esc_attr( $meta['slug'] ); ?>">
-                <?php echo esc_html( $meta['title'] ); ?> Programs
-            </h2>
-            <?php endforeach; ?>
+            <h2><?php echo esc_html( $loc['title'] ); ?> Programs</h2>
         </div>
         <div class="row instrument_slider">
-            <?php while ( $programs_query->have_posts() ) : $programs_query->the_post();
-                $prog_locs     = get_field( 'available_locations' );
-                $loc_classes   = array();
-                $primary_color = '';
-
-                if ( $prog_locs ) {
-                    foreach ( $prog_locs as $prog_loc ) {
-                        if ( isset( $loc_meta[ $prog_loc->ID ] ) ) {
-                            $loc_classes[] = 'loc-' . $loc_meta[ $prog_loc->ID ]['slug'];
-                            if ( empty( $primary_color ) ) {
-                                $primary_color = $loc_meta[ $prog_loc->ID ]['card_color'];
-                            }
-                        }
-                    }
-                }
-
-                if ( empty( $loc_classes ) ) continue;
-            ?>
-            <div class="cource-item <?php echo esc_attr( $primary_color . ' ' . implode( ' ', $loc_classes ) ); ?>">
+            <?php while ( $loc['query']->have_posts() ) : $loc['query']->the_post(); ?>
+            <div class="cource-item <?php echo esc_attr( $loc['card_color'] ); ?>">
                 <div class="cource-img">
                     <img src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'medium' ) ); ?>"
                         alt="<?php the_title_attribute(); ?>">
@@ -312,33 +287,28 @@ if ( $home_locations ) :
         </div>
     </div>
 </div>
+<?php endforeach; ?>
 
 <script>
-(function () {
-    var section  = document.querySelector('.programs-section');
-    var locMap   = <?php echo json_encode( array_combine(
-        array_column( $loc_meta, 'div_id' ),
-        array_column( $loc_meta, 'slug' )
-    ) ); ?>;
-    var allSlugs = <?php echo json_encode( array_values( array_column( $loc_meta, 'slug' ) ) ); ?>;
+jQuery(document).ready(function ($) {
+    var locData = <?php echo json_encode( array_map( function( $l ) {
+        return array( 'divId' => $l['div_id'], 'sectionId' => $l['section_id'] );
+    }, $loc_data ) ); ?>;
 
-    if ( ! section ) return;
-
-    Object.keys( locMap ).forEach( function ( divId ) {
-        var tab = document.querySelector( '#' + divId );
-        if ( ! tab ) return;
-
-        tab.addEventListener( 'click', function () {
-            var active = locMap[ divId ];
-            allSlugs.forEach( function ( slug ) {
-                section.classList.toggle( 'active-' + slug, slug === active );
-            } );
-        } );
-    } );
-}());
+    locData.forEach(function (loc) {
+        $('#' + loc.divId).on('click', function () {
+            $('.programs-section-block').removeClass('active');
+            var $section = $('#' + loc.sectionId);
+            $section.addClass('active');
+            // Lazy-init Slick on first show; setPosition if already initialized
+            if (typeof window.initInstrumentSlider === 'function') {
+                window.initInstrumentSlider($section.find('.instrument_slider'));
+            }
+        });
+    });
+});
 </script>
 
-<?php endif; ?>
 <?php endif; ?>
 <!-- blog-sec -->
 
