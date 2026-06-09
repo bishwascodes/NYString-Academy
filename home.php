@@ -256,7 +256,7 @@ if ( $home_locations ) :
      id="<?php echo esc_attr( $loc['section_id'] ); ?>">
     <div class="container">
         <div class="sec-title mb-50 text-center">
-            <h2><?php echo esc_html( $loc['title'] ); ?> Programs</h2>
+            <h2><span class="orange-color"><?php echo esc_html( $loc['title'] ); ?></span> Programs</h2>
         </div>
         <div class="row instrument_slider">
             <?php while ( $loc['query']->have_posts() ) : $loc['query']->the_post(); ?>
