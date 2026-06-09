@@ -22,7 +22,7 @@
 
         // 2. Query programs whose post_type ACF text field matches this page's value
         $query_args = array(
-            'post_type'      => 'program',
+            'post_type'      => 'post',
             'posts_per_page' => -1,
             'post_status'    => 'publish',
         );
