@@ -15,6 +15,8 @@ $query = new WP_Query($args);
 if($query->have_posts()) :
 ?>
 
+
+
 <div id="rs-slider" class="slider-overlay-2">
     <div id="home-slider">
 
@@ -209,6 +211,14 @@ wp_reset_postdata();
 
 </div>
 <!-- programs-sec -->
+ <style type="text/css">
+    .morris_programs, .fort_programs{
+        display:none;
+    }
+    .morris_programs.active, .fort_programs.active{
+        display:block;
+    }
+</style>
 <?php
 $home_locations = get_field( 'location' );
 if ( $home_locations ) :
@@ -246,7 +256,7 @@ if ( $home_locations ) :
 <div class="rs-courses <?php echo esc_attr( $programs_cls . $active_cls ); ?>">
     <div class="container">
         <div class="sec-title mb-50 text-center">
-            <h2><?php echo esc_html( $loc_title ); ?> Programs</h2>
+            <h2><span class="orange-color"><?php echo esc_html( $loc_title ); ?></span> Programs</h2>
         </div>
         <div class="row instrument_slider">
             <?php while ( $pq->have_posts() ) : $pq->the_post(); ?>
