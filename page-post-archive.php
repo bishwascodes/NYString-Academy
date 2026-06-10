@@ -44,7 +44,7 @@
             $cats = get_the_category( $post_item->ID );
             if ( $cats ) {
                 foreach ( $cats as $cat ) {
-                    $key = 'cat-' . $cat->term_id;
+                    $key = $cat->slug;
                     if ( ! isset( $filter_tabs[ $key ] ) ) {
                         $filter_tabs[ $key ] = $cat->name;
                     }
@@ -77,7 +77,7 @@
                 $post_cats = get_the_category();
                 $filter_keys = array();
                 foreach ( $post_cats as $cat ) {
-                    $filter_keys[] = 'cat-' . $cat->term_id;
+                    $filter_keys[] = $cat->slug;
                 }
                 $filter_attr = implode( ' ', $filter_keys );
             ?>
