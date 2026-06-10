@@ -38,20 +38,17 @@
 
         $posts_query = new WP_Query( $query_args );
 
-        // 3. First pass — collect unique filter tabs from instrument relationship field
+        // 3. First pass — collect unique filter tabs from post categories
         $filter_tabs = array(); // filter_key => label
         foreach ( $posts_query->posts as $post_item ) {
-            $instruments = get_field( 'instrument', $post_item->ID );
-            if ( $instruments ) {
-                foreach ( $instruments as $inst ) {
-                    $key = 'inst-' . $inst->ID;
+            $cats = get_the_category( $post_item->ID );
+            if ( $cats ) {
+                foreach ( $cats as $cat ) {
+                    $key = 'cat-' . $cat->term_id;
                     if ( ! isset( $filter_tabs[ $key ] ) ) {
-                        $filter_tabs[ $key ] = get_the_title( $inst->ID );
+                        $filter_tabs[ $key ] = $cat->name;
                     }
                 }
-            } else {
-                // No instrument assigned — use the post title as its own tab
-                $filter_tabs[ 'post-' . $post_item->ID ] = get_the_title( $post_item->ID );
             }
         }
         ?>
@@ -73,15 +70,10 @@
 
         <div class="row g-4" id="post-grid">
             <?php if ( $posts_query->have_posts() ) : while ( $posts_query->have_posts() ) : $posts_query->the_post();
-                $instruments = get_field( 'instrument' );
-
-                if ( $instruments ) {
-                    $filter_keys = array();
-                    foreach ( $instruments as $inst ) {
-                        $filter_keys[] = 'inst-' . $inst->ID;
-                    }
-                } else {
-                    $filter_keys = array( 'post-' . get_the_ID() );
+                $post_cats = get_the_category();
+                $filter_keys = array();
+                foreach ( $post_cats as $cat ) {
+                    $filter_keys[] = 'cat-' . $cat->term_id;
                 }
                 $filter_attr = implode( ' ', $filter_keys );
             ?>
@@ -94,11 +86,9 @@
                                 <img src="<?php echo esc_url( get_template_directory_uri() . '/images/placeholder.jpg' ); ?>" alt="<?php the_title_attribute(); ?>" class="card-img-top w-100" style="height:220px;object-fit:cover;">
                             <?php endif; ?>
                             <div class="position-absolute top-0 start-0 m-2 d-flex flex-wrap gap-1">
-                                <?php if ( $instruments ) : foreach ( $instruments as $inst ) : ?>
-                                    <span class="badge bg-primary"><?php echo esc_html( get_the_title( $inst->ID ) ); ?></span>
-                                <?php endforeach; else : ?>
-                                    <span class="badge bg-secondary"><?php the_title(); ?></span>
-                                <?php endif; ?>
+                                <?php foreach ( $post_cats as $cat ) : ?>
+                                    <span class="badge bg-primary"><?php echo esc_html( $cat->name ); ?></span>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                         <div class="card-body">
