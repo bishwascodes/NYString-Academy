@@ -305,10 +305,10 @@ jQuery(document).ready(function ($) {
 </script>
 
 <?php endif; ?>
-<!-- blog-sec -->
+<!-- kids_music_and_art_fort_lee -->
 
 <?php
-$post_type = 'blog';
+$post_type = 'kids_music_and_art_fort_lee';
 
 $args = array(
     'post_type'      => 'post',
@@ -561,7 +561,7 @@ $post_type = 'news';
 
 $args = array(
     'post_type'      => 'post',
-    'posts_per_page' => -1,
+    'posts_per_page' => 6,
     'meta_query'     => array(
         array(
             'key'   => 'post_type',
@@ -634,7 +634,7 @@ $post_type = 'homework_rewards';
 
 $args = array(
     'post_type'      => 'post',
-    'posts_per_page' => -1,
+    'posts_per_page' => 6,
     'meta_query'     => array(
         array(
             'key'   => 'post_type',
