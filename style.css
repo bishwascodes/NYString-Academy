@@ -49,10 +49,7 @@ ul{
 	list-style:none;
 	text-decoration:none;
 }
-#menu-menu-1{
-	display:flex !important;
-	gap:20px;
-}
+
 h1{
 	font-weight:600;
 }
