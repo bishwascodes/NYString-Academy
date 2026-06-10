@@ -52,27 +52,28 @@
             $instruments = get_field( 'instrument', $program_post->ID );
             if ( $instruments ) {
                 foreach ( $instruments as $inst ) {
-                    $key = 'inst-' . $inst->ID;
+                    $key = $inst->post_name;
                     if ( ! isset( $filter_tabs[ $key ] ) ) {
                         $filter_tabs[ $key ] = get_the_title( $inst->ID );
                     }
                 }
-            } else {
-                // No instrument assigned — use the program title as its own tab
-                $filter_tabs[ 'prog-' . $program_post->ID ] = get_the_title( $program_post->ID );
             }
         }
         ?>
 
         <div class="row mb-4">
             <div class="col-md-12">
+                <?php
+                $current_filter = isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
+                $base_url       = get_permalink();
+                ?>
                 <ul id="program-filter" class="list-inline text-center">
                     <li class="list-inline-item">
-                        <a href="#" class="program-filter-btn btn btn-sm btn-primary active" data-filter="all">All</a>
+                        <a href="<?php echo esc_url( $base_url ); ?>" class="program-filter-btn btn btn-sm <?php echo $current_filter === 'all' ? 'btn-primary active' : 'btn-outline-primary'; ?>" data-filter="all">All</a>
                     </li>
                     <?php foreach ( $filter_tabs as $key => $label ) : ?>
                         <li class="list-inline-item">
-                            <a href="#" class="program-filter-btn btn btn-sm btn-outline-primary" data-filter="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></a>
+                            <a href="<?php echo esc_url( add_query_arg( 'filter', $key, $base_url ) ); ?>" class="program-filter-btn btn btn-sm <?php echo $current_filter === $key ? 'btn-primary active' : 'btn-outline-primary'; ?>" data-filter="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -82,14 +83,11 @@
         <div class="row g-4" id="program-grid">
             <?php if ( $programs_query->have_posts() ) : while ( $programs_query->have_posts() ) : $programs_query->the_post();
                 $instruments = get_field( 'instrument' );
-
+                $filter_keys = array();
                 if ( $instruments ) {
-                    $filter_keys = array();
                     foreach ( $instruments as $inst ) {
-                        $filter_keys[] = 'inst-' . $inst->ID;
+                        $filter_keys[] = $inst->post_name;
                     }
-                } else {
-                    $filter_keys = array( 'prog-' . get_the_ID() );
                 }
                 $filter_attr = implode( ' ', $filter_keys );
             ?>
@@ -104,9 +102,7 @@
                             <div class="position-absolute top-0 start-0 m-2 d-flex flex-wrap gap-1">
                                 <?php if ( $instruments ) : foreach ( $instruments as $inst ) : ?>
                                     <span class="badge bg-primary"><?php echo esc_html( get_the_title( $inst->ID ) ); ?></span>
-                                <?php endforeach; else : ?>
-                                    <span class="badge bg-secondary"><?php the_title(); ?></span>
-                                <?php endif; ?>
+                                <?php endforeach; endif; ?>
                             </div>
                         </div>
                         <div class="card-body">
@@ -131,21 +127,42 @@
     var btns  = document.querySelectorAll('.program-filter-btn');
     var items = document.querySelectorAll('#program-grid .grid-item');
 
+    function applyFilter(filter) {
+        btns.forEach(function (b) {
+            var isActive = b.getAttribute('data-filter') === filter;
+            b.classList.toggle('active', isActive);
+            b.classList.toggle('btn-primary', isActive);
+            b.classList.toggle('btn-outline-primary', !isActive);
+        });
+        items.forEach(function (item) {
+            var keys = item.getAttribute('data-filter').split(' ');
+            item.style.display = (filter === 'all' || keys.indexOf(filter) !== -1) ? '' : 'none';
+        });
+    }
+
+    // Apply filter from URL on load
+    var params = new URLSearchParams(window.location.search);
+    applyFilter(params.get('filter') || 'all');
+
     btns.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
-            btns.forEach(function (b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-
             var filter = btn.getAttribute('data-filter');
-            items.forEach(function (item) {
-                if (filter === 'all' || item.getAttribute('data-filter').split(' ').indexOf(filter) !== -1) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+            var url = new URL(window.location.href);
+            if (filter === 'all') {
+                url.searchParams.delete('filter');
+            } else {
+                url.searchParams.set('filter', filter);
+            }
+            history.pushState(null, '', url.toString());
+            applyFilter(filter);
         });
+    });
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', function () {
+        var p = new URLSearchParams(window.location.search);
+        applyFilter(p.get('filter') || 'all');
     });
 }());
 </script>
