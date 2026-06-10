@@ -23,12 +23,16 @@
         ) );
         ?>
 
+        <?php
+        $current_filter = isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
+        $base_url       = get_permalink();
+        ?>
         <div class="row mb-4">
             <div class="col-md-12">
                 <ul id="rental-filter" class="list-inline text-center">
-                    <li class="list-inline-item"><a href="#" class="rental-filter-btn btn btn-sm btn-primary active" data-filter="all">All</a></li>
+                    <li class="list-inline-item"><a href="<?php echo esc_url( $base_url ); ?>" class="rental-filter-btn btn btn-sm <?php echo $current_filter === 'all' ? 'btn-primary active' : 'btn-outline-primary'; ?>" data-filter="all">All</a></li>
                     <?php if ( ! is_wp_error( $rental_terms ) ) : foreach ( $rental_terms as $term ) : ?>
-                        <li class="list-inline-item"><a href="#" class="rental-filter-btn btn btn-sm btn-outline-primary" data-filter="<?php echo esc_attr( $term->slug ); ?>"><?php echo esc_html( $term->name ); ?></a></li>
+                        <li class="list-inline-item"><a href="<?php echo esc_url( add_query_arg( 'filter', $term->slug, $base_url ) ); ?>" class="rental-filter-btn btn btn-sm <?php echo $current_filter === $term->slug ? 'btn-primary active' : 'btn-outline-primary'; ?>" data-filter="<?php echo esc_attr( $term->slug ); ?>"><?php echo esc_html( $term->name ); ?></a></li>
                     <?php endforeach; endif; ?>
                 </ul>
             </div>
@@ -84,21 +88,42 @@
     var btns  = document.querySelectorAll('.rental-filter-btn');
     var items = document.querySelectorAll('#rental-grid .grid-item');
 
+    function applyFilter(filter) {
+        btns.forEach(function (b) {
+            var isActive = b.getAttribute('data-filter') === filter;
+            b.classList.toggle('active', isActive);
+            b.classList.toggle('btn-primary', isActive);
+            b.classList.toggle('btn-outline-primary', !isActive);
+        });
+        items.forEach(function (item) {
+            var keys = item.getAttribute('data-filter').split(' ');
+            item.style.display = (filter === 'all' || keys.indexOf(filter) !== -1) ? '' : 'none';
+        });
+    }
+
+    // Apply filter from URL on load
+    var params = new URLSearchParams(window.location.search);
+    applyFilter(params.get('filter') || 'all');
+
     btns.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
-            btns.forEach(function (b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-
             var filter = btn.getAttribute('data-filter');
-            items.forEach(function (item) {
-                if (filter === 'all' || item.getAttribute('data-filter').split(' ').indexOf(filter) !== -1) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+            var url = new URL(window.location.href);
+            if (filter === 'all') {
+                url.searchParams.delete('filter');
+            } else {
+                url.searchParams.set('filter', filter);
+            }
+            history.pushState(null, '', url.toString());
+            applyFilter(filter);
         });
+    });
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', function () {
+        var p = new URLSearchParams(window.location.search);
+        applyFilter(p.get('filter') || 'all');
     });
 }());
 </script>
