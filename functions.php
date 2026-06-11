@@ -28,12 +28,6 @@ function nystringacademy_enqueue_styles() {
         );
 
         wp_enqueue_style(
-            'owl-carousel',
-            get_stylesheet_directory_uri() . '/css/owl-carousel.css',
-            array()
-        );
-
-        wp_enqueue_style(
             'slick-style',
             get_stylesheet_directory_uri() . '/css/slick.css',
             array()
@@ -98,13 +92,6 @@ function load_custom_js() {
     );
 
     wp_enqueue_script(
-        'owl-js',
-        get_stylesheet_directory_uri() . '/js/owl-carousel-min.js',
-        array('jquery'),   
-        '1.0',
-        true       
-    );
-        wp_enqueue_script(
         'slick-js',
         get_stylesheet_directory_uri() . '/js/slick-min.js',
         array('jquery'),
