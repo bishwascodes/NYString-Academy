@@ -44,7 +44,7 @@ if ( ! get_field( 'is_active' ) ) {
                 $additional_instrument = get_field('additional_item_in_instrument');
                 $instrument_parts = array();
                 if($instrument){
-                    foreach($instrument as $post){ $instrument_parts[] = $post->post_title; }
+                    foreach($instrument as $inst){ $instrument_parts[] = $inst->post_title; }
                 }
                 if($additional_instrument){ $instrument_parts[] = $additional_instrument; }
                 $instrument_string = implode('/', $instrument_parts);
