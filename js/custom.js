@@ -53,38 +53,100 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    // Home Slider (Slick)
+    // Home Slider (OwlCarousel)
     if ($('#home-slider').length) {
-        var $homeSlider = $('#home-slider');
+        var owl = $('#home-slider');
 
-        $homeSlider.slick({
-            infinite:       true,
-            speed:          800,
-            slidesToShow:   1,
-            slidesToScroll: 1,
-            autoplay:       true,
-            autoplaySpeed:  3000,
-            fade:           true,
-            arrows:         true,
-            dots:           false,
-            adaptiveHeight: true,
-            prevArrow: '<div class="owl-prev"><i class="fa fa-angle-left"></i></div>',
-            nextArrow: '<div class="owl-next"><i class="fa fa-angle-right"></i></div>',
+        owl.owlCarousel({
+            loop: true,
+            margin: 0,
+            navSpeed: 800,
+            autoHeight: true,
+            nav: true,
+            navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+            items: 1,
+            autoplay: true,
+            transitionStyle: "fade"
         });
 
-        // Preserve data-animation-in/out support for slide content
-        var animEnd = 'webkitAnimationEnd mozAnimationEnd animationend';
-        function setAnimation($elems, dir) {
-            $elems.each(function () {
-                var $el = $(this), cls = 'animated ' + $el.data('animation-' + dir);
-                $el.addClass(cls).one(animEnd, function () { $el.removeClass(cls); });
+        function setAnimation(_elem, _InOut) {
+            var animationEndEvent = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+            _elem.each(function () {
+                var $elem = $(this);
+                var $animationType = 'animated ' + $elem.data('animation-' + _InOut);
+                $elem.addClass($animationType).one(animationEndEvent, function () {
+                    $elem.removeClass($animationType);
+                });
             });
         }
-        $homeSlider.on('beforeChange', function (e, slick, cur) {
-            setAnimation($('.slick-slide[data-slick-index="' + cur + '"]', this).find('[data-animation-out]'), 'out');
+
+        owl.on('change.owl.carousel', function (event) {
+            var $currentItem = $('.owl-item', owl).eq(event.item.index);
+            var $elemsToanim = $currentItem.find("[data-animation-out]");
+            setAnimation($elemsToanim, 'out');
         });
-        $homeSlider.on('afterChange', function (e, slick, cur) {
-            setAnimation($('.slick-slide[data-slick-index="' + cur + '"]', this).find('[data-animation-in]'), 'in');
+
+        owl.on('changed.owl.carousel', function (event) {
+            var $currentItem = $('.owl-item', owl).eq(event.item.index);
+            var $elemsToanim = $currentItem.find("[data-animation-in]");
+            setAnimation($elemsToanim, 'in');
+        });
+    }
+
+    // RS Carousel (OwlCarousel — data-attribute driven)
+    if ($('.rs-carousel').length) {
+        $('.rs-carousel').each(function () {
+            var owlCarousel      = $(this),
+                loop             = owlCarousel.data('loop'),
+                items            = owlCarousel.data('items'),
+                margin           = owlCarousel.data('margin'),
+                autoplay         = owlCarousel.data('autoplay'),
+                autoplayTimeout  = owlCarousel.data('autoplay-timeout'),
+                smartSpeed       = owlCarousel.data('smart-speed'),
+                dots             = owlCarousel.data('dots'),
+                nav              = owlCarousel.data('nav'),
+                navSpeed         = owlCarousel.data('nav-speed'),
+                xsDevice         = owlCarousel.data('mobile-device'),
+                xsDeviceNav      = owlCarousel.data('mobile-device-nav'),
+                xsDeviceDots     = owlCarousel.data('mobile-device-dots'),
+                smDevice         = owlCarousel.data('ipad-device'),
+                smDeviceNav      = owlCarousel.data('ipad-device-nav'),
+                smDeviceDots     = owlCarousel.data('ipad-device-dots'),
+                mdDevice         = owlCarousel.data('md-device'),
+                mdDeviceNav      = owlCarousel.data('md-device-nav'),
+                mdDeviceDots     = owlCarousel.data('md-device-dots');
+
+            owlCarousel.owlCarousel({
+                loop:            (loop     ? true  : false),
+                items:           (items    ? items : 4),
+                lazyLoad:        true,
+                margin:          (margin   ? margin : 0),
+                autoplay:        (autoplay ? true  : false),
+                autoplayTimeout: (autoplayTimeout ? autoplayTimeout : 1000),
+                smartSpeed:      (smartSpeed      ? smartSpeed      : 250),
+                dots:            (dots     ? true  : false),
+                nav:             (nav      ? true  : false),
+                navText:         ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+                navSpeed:        (navSpeed ? true  : false),
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: (xsDevice    ? xsDevice    : 1),
+                        nav:   (xsDeviceNav ? true : false),
+                        dots:  (xsDeviceDots ? true : false)
+                    },
+                    768: {
+                        items: (smDevice    ? smDevice    : 3),
+                        nav:   (smDeviceNav ? true : false),
+                        dots:  (smDeviceDots ? true : false)
+                    },
+                    992: {
+                        items: (mdDevice    ? mdDevice    : 4),
+                        nav:   (mdDeviceNav ? true : false),
+                        dots:  (mdDeviceDots ? true : false)
+                    }
+                }
+            });
         });
     }
 
