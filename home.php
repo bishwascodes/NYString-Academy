@@ -451,9 +451,17 @@ while($faculty_query->have_posts()) :
     if($is_active){
 
         $instrument = get_field('instrument');
+        $additional_instrument = get_field('additional_item_in_instrument');
         $title = get_the_title();
         $permalink = get_permalink();
         $img = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+
+        $instrument_parts = array();
+        if($instrument){
+            foreach($instrument as $post_item){ $instrument_parts[] = $post_item->post_title; }
+        }
+        if($additional_instrument){ $instrument_parts[] = $additional_instrument; }
+        $instrument_string = implode('/', $instrument_parts);
 ?>
 
             <div class="team-item">
@@ -468,23 +476,9 @@ while($faculty_query->have_posts()) :
 
                         <h3 class="team-name"><?php echo esc_html($title); ?></h3>
 
-                        <?php
-                        
-                        if($instrument){
-                            ?>
-                        <p>
-                            <?php
-                            foreach($instrument as $post_item){
-       
-                            echo '<span>' . esc_html($post_item->post_title) . '</span>';
-
-                            }
-                           ?>
-                        </p>
-                        <?php 
-                        }
-                        
-                        ?>
+                        <?php if($instrument_string){ ?>
+                        <p><?php echo esc_html($instrument_string); ?></p>
+                        <?php } ?>
 
                     </div>
                 </div>
@@ -500,23 +494,9 @@ while($faculty_query->have_posts()) :
 
                                 <h3><?php echo esc_html($title); ?></h3>
 
-                                <?php
-                        
-                        if($instrument){
-                            ?>
-                                <p>
-                                    <?php
-                            foreach($instrument as $post_item){
-       
-                            echo '<span>' . esc_html($post_item->post_title) . '</span>';
-
-                            }
-                           ?>
-                                </p>
-                                <?php 
-                        }
-                        
-                        ?>
+                                <?php if($instrument_string){ ?>
+                                <p><?php echo esc_html($instrument_string); ?></p>
+                                <?php } ?>
 
                             </div>
                         </div>

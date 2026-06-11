@@ -39,13 +39,20 @@ if ( ! get_field( 'is_active' ) ) {
             </div>
             <div class="col-lg-8 col-md-12">
 
-                <?php $instrument = get_field('instrument'); ?>
-                <?php if ($instrument) : ?>
+                <?php
+                $instrument = get_field('instrument');
+                $additional_instrument = get_field('additional_item_in_instrument');
+                $instrument_parts = array();
+                if($instrument){
+                    foreach($instrument as $post){ $instrument_parts[] = $post->post_title; }
+                }
+                if($additional_instrument){ $instrument_parts[] = $additional_instrument; }
+                $instrument_string = implode('/', $instrument_parts);
+                ?>
+                <?php if ($instrument_string) : ?>
                 <h4 class="desc-title">Instrument</h4>
                 <p style="display:block; border:1px solid #f1f1f1; padding:10px;">
-                    <?php foreach ($instrument as $post) : setup_postdata($post); ?>
-                        <?php echo esc_html($post->post_title); ?>
-                    <?php endforeach; wp_reset_postdata(); ?>
+                    <?php echo esc_html($instrument_string); ?>
                 </p>
                 <?php endif; ?>
 
@@ -106,9 +113,17 @@ while($faculty_query->have_posts()) :
     if($is_active){
 
         $instrument = get_field('instrument');
+        $additional_instrument = get_field('additional_item_in_instrument');
         $title = get_the_title();
         $permalink = get_permalink();
         $img = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+
+        $instrument_parts = array();
+        if($instrument){
+            foreach($instrument as $post_item){ $instrument_parts[] = $post_item->post_title; }
+        }
+        if($additional_instrument){ $instrument_parts[] = $additional_instrument; }
+        $instrument_string = implode('/', $instrument_parts);
 ?>
 
             <div class="team-item">
@@ -123,23 +138,9 @@ while($faculty_query->have_posts()) :
 
                         <h3 class="team-name"><?php echo esc_html($title); ?></h3>
 
-                        <?php
-                        
-                        if($instrument){
-                            ?>
-                        <p>
-                            <?php
-                            foreach($instrument as $post_item){
-       
-                            echo '<span>' . esc_html($post_item->post_title) . '</span>';
-
-                            }
-                           ?>
-                        </p>
-                        <?php 
-                        }
-                        
-                        ?>
+                        <?php if($instrument_string){ ?>
+                        <p><?php echo esc_html($instrument_string); ?></p>
+                        <?php } ?>
 
                     </div>
                 </div>
@@ -155,23 +156,9 @@ while($faculty_query->have_posts()) :
 
                                 <h3><?php echo esc_html($title); ?></h3>
 
-                                <?php
-                        
-                        if($instrument){
-                            ?>
-                                <p>
-                                    <?php
-                            foreach($instrument as $post_item){
-       
-                            echo '<span>' . esc_html($post_item->post_title) . '</span>';
-
-                            }
-                           ?>
-                                </p>
-                                <?php 
-                        }
-                        
-                        ?>
+                                <?php if($instrument_string){ ?>
+                                <p><?php echo esc_html($instrument_string); ?></p>
+                                <?php } ?>
 
                             </div>
                         </div>
