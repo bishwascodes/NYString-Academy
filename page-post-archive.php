@@ -17,24 +17,15 @@
     <div class="container">
 
         <?php
-        // 1. Get the post_type text field assigned to this page via ACF
+        // 1. Get the custom post type slug assigned to this page via ACF
         $page_post_type = get_field( 'post_type' );
 
-        // 2. Query posts whose post_type ACF text field matches this page's value
+        // 2. Query the custom post type directly
         $query_args = array(
-            'post_type'      => 'post',
+            'post_type'      => ! empty( $page_post_type ) ? sanitize_key( $page_post_type ) : 'post',
             'posts_per_page' => -1,
             'post_status'    => 'publish',
         );
-        if ( ! empty( $page_post_type ) ) {
-            $query_args['meta_query'] = array(
-                array(
-                    'key'     => 'post_type',
-                    'value'   => $page_post_type,
-                    'compare' => '=',
-                ),
-            );
-        }
 
         $posts_query = new WP_Query( $query_args );
 
