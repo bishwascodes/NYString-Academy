@@ -299,3 +299,7 @@ margin-inline:-15px;
 .single .rs-event-details img {
 	width: auto;
 }
+
+.page-item.active .page-link{
+	color:#fff!important;
+}

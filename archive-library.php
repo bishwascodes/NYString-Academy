@@ -22,7 +22,7 @@
 
         $query_args = array(
             'post_type'      => 'library',
-            'posts_per_page' => 9,
+            'posts_per_page' => 15,
             'post_status'    => 'publish',
             'paged'          => $paged,
         );
@@ -50,11 +50,11 @@
             <div class="col-md-12">
                 <ul id="library-filter" class="list-inline text-center">
                     <li class="list-inline-item">
-                        <a href="<?php echo esc_url( $base_url ); ?>" class="btn btn-sm <?php echo $current_filter === 'all' ? 'btn-primary active' : 'btn-outline-primary'; ?>">All</a>
+                        <a href="<?php echo esc_url( $base_url ); ?>" class="library-filter-btn btn btn-sm <?php echo $current_filter === 'all' ? 'btn-primary active' : 'btn-outline-primary'; ?>" data-filter="all">All</a>
                     </li>
                     <?php if ( ! is_wp_error( $filter_tabs ) ) : foreach ( $filter_tabs as $term ) : ?>
                         <li class="list-inline-item">
-                            <a href="<?php echo esc_url( add_query_arg( 'filter', $term->slug, $base_url ) ); ?>" class="btn btn-sm <?php echo $current_filter === $term->slug ? 'btn-primary active' : 'btn-outline-primary'; ?>"><?php echo esc_html( $term->name ); ?></a>
+                            <a href="<?php echo esc_url( add_query_arg( 'filter', $term->slug, $base_url ) ); ?>" class="library-filter-btn btn btn-sm <?php echo $current_filter === $term->slug ? 'btn-primary active' : 'btn-outline-primary'; ?>" data-filter="<?php echo esc_attr( $term->slug ); ?>"><?php echo esc_html( $term->name ); ?></a>
                         </li>
                     <?php endforeach; endif; ?>
                 </ul>
@@ -65,7 +65,7 @@
             <?php if ( $library_query->have_posts() ) : while ( $library_query->have_posts() ) : $library_query->the_post();
                 $library_cats = get_the_terms( get_the_ID(), 'library-cat' );
             ?>
-                <div class="col-lg-4 col-md-6 mb-4 grid-item">
+                <div class="col-lg-4 col-md-6 mb-4 grid-item" data-filter="<?php echo esc_attr( implode( ' ', wp_list_pluck( $library_cats && ! is_wp_error( $library_cats ) ? $library_cats : array(), 'slug' ) ) ); ?>">
                     <div class="card h-100 shadow-sm border-0">
                         <div class="position-relative overflow-hidden" onclick="location.href='<?php the_permalink(); ?>'" style="cursor:pointer">
                             <?php if ( has_post_thumbnail() ) : ?>
@@ -127,5 +127,48 @@
 
     </div>
 </div>
+
+<script>
+(function () {
+    var btns  = document.querySelectorAll('#library-filter .btn');
+    var items = document.querySelectorAll('#library-grid .grid-item');
+
+    function applyFilter(filter) {
+        btns.forEach(function (b) {
+            var isActive = b.getAttribute('data-filter') === filter;
+            b.classList.toggle('active', isActive);
+            b.classList.toggle('btn-primary', isActive);
+            b.classList.toggle('btn-outline-primary', !isActive);
+        });
+        items.forEach(function (item) {
+            var keys = item.getAttribute('data-filter').split(' ');
+            item.style.display = (filter === 'all' || keys.indexOf(filter) !== -1) ? '' : 'none';
+        });
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    applyFilter(params.get('filter') || 'all');
+
+    btns.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var filter = btn.getAttribute('data-filter');
+            var url = new URL(window.location.href);
+            if (filter === 'all') {
+                url.searchParams.delete('filter');
+            } else {
+                url.searchParams.set('filter', filter);
+            }
+            history.pushState(null, '', url.toString());
+            applyFilter(filter);
+        });
+    });
+
+    window.addEventListener('popstate', function () {
+        var p = new URLSearchParams(window.location.search);
+        applyFilter(p.get('filter') || 'all');
+    });
+}());
+</script>
 
 <?php get_footer(); ?>
