@@ -109,6 +109,7 @@
         ) );
         ?>
 
+        <div id="library-pagination">
         <?php if ( $pagination ) : ?>
             <nav class="mt-4" aria-label="Library pagination">
                 <ul class="pagination justify-content-center flex-wrap">
@@ -124,49 +125,68 @@
                 </ul>
             </nav>
         <?php endif; ?>
+        </div>
 
     </div>
 </div>
 
 <script>
 (function () {
-    var btns  = document.querySelectorAll('#library-filter .btn');
-    var items = document.querySelectorAll('#library-grid .grid-item');
+    var grid       = document.getElementById('library-grid');
+    var pagination = document.getElementById('library-pagination');
 
-    function applyFilter(filter) {
-        btns.forEach(function (b) {
-            var isActive = b.getAttribute('data-filter') === filter;
+    function setLoading(on) {
+        grid.style.opacity = on ? '0.4' : '1';
+        grid.style.pointerEvents = on ? 'none' : '';
+    }
+
+    function updateFilterButtons(activeFilter) {
+        document.querySelectorAll('.library-filter-btn').forEach(function (b) {
+            var isActive = b.getAttribute('data-filter') === activeFilter;
             b.classList.toggle('active', isActive);
             b.classList.toggle('btn-primary', isActive);
             b.classList.toggle('btn-outline-primary', !isActive);
         });
-        items.forEach(function (item) {
-            var keys = item.getAttribute('data-filter').split(' ');
-            item.style.display = (filter === 'all' || keys.indexOf(filter) !== -1) ? '' : 'none';
-        });
     }
 
-    var params = new URLSearchParams(window.location.search);
-    applyFilter(params.get('filter') || 'all');
+    function fetchPage(url) {
+        setLoading(true);
+        fetch(url)
+            .then(function (r) { return r.text(); })
+            .then(function (html) {
+                var doc       = new DOMParser().parseFromString(html, 'text/html');
+                var newGrid   = doc.getElementById('library-grid');
+                var newPaging = doc.getElementById('library-pagination');
+                if (newGrid)   grid.innerHTML       = newGrid.innerHTML;
+                if (newPaging) pagination.innerHTML = newPaging.innerHTML;
+                var filter = new URL(url, location.href).searchParams.get('filter') || 'all';
+                updateFilterButtons(filter);
+                history.pushState(null, '', url);
+                window.scrollTo({ top: grid.offsetTop - 20, behavior: 'smooth' });
+            })
+            .catch(function () { setLoading(false); })
+            .finally(function () { setLoading(false); });
+    }
 
-    btns.forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
+    // Event delegation — covers dynamically replaced pagination links too
+    document.addEventListener('click', function (e) {
+        var filterBtn = e.target.closest('.library-filter-btn');
+        var pageLink  = e.target.closest('#library-pagination .page-link');
+
+        if (filterBtn) {
             e.preventDefault();
-            var filter = btn.getAttribute('data-filter');
-            var url = new URL(window.location.href);
-            if (filter === 'all') {
-                url.searchParams.delete('filter');
-            } else {
-                url.searchParams.set('filter', filter);
-            }
-            history.pushState(null, '', url.toString());
-            applyFilter(filter);
-        });
+            var filter = filterBtn.getAttribute('data-filter');
+            var url    = new URL(filterBtn.href, location.href);
+            url.searchParams.delete('paged'); // reset to page 1 on filter change
+            fetchPage(url.toString());
+        } else if (pageLink && pageLink.href) {
+            e.preventDefault();
+            fetchPage(pageLink.href);
+        }
     });
 
     window.addEventListener('popstate', function () {
-        var p = new URLSearchParams(window.location.search);
-        applyFilter(p.get('filter') || 'all');
+        fetchPage(location.href);
     });
 }());
 </script>
