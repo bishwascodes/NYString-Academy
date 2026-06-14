@@ -16,41 +16,47 @@
     <div class="container">
 
         <?php
-        // 1. Query all published library posts
-        $library_query = new WP_Query( array(
-            'post_type'      => 'library',
-            'posts_per_page' => -1,
-            'post_status'    => 'publish',
-        ) );
-
-        // 2. First pass — collect unique filter tabs from library-cat taxonomy
-        $filter_tabs = array(); // slug => label
-        foreach ( $library_query->posts as $library_post ) {
-            $cats = get_the_terms( $library_post->ID, 'library-cat' );
-            if ( $cats && ! is_wp_error( $cats ) ) {
-                foreach ( $cats as $cat ) {
-                    if ( ! isset( $filter_tabs[ $cat->slug ] ) ) {
-                        $filter_tabs[ $cat->slug ] = $cat->name;
-                    }
-                }
-            }
-        }
-
         $current_filter = isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
         $base_url       = get_post_type_archive_link( 'library' );
+        $paged          = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : ( isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1 );
+
+        $query_args = array(
+            'post_type'      => 'library',
+            'posts_per_page' => 9,
+            'post_status'    => 'publish',
+            'paged'          => $paged,
+        );
+
+        if ( $current_filter !== 'all' ) {
+            $query_args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'library-cat',
+                    'field'    => 'slug',
+                    'terms'    => $current_filter,
+                ),
+            );
+        }
+
+        $library_query = new WP_Query( $query_args );
+
+        // Get filter tabs directly from the taxonomy — no need to loop all posts
+        $filter_tabs = get_terms( array(
+            'taxonomy'   => 'library-cat',
+            'hide_empty' => true,
+        ) );
         ?>
 
         <div class="row mb-4">
             <div class="col-md-12">
                 <ul id="library-filter" class="list-inline text-center">
                     <li class="list-inline-item">
-                        <a href="<?php echo esc_url( $base_url ); ?>" class="library-filter-btn btn btn-sm <?php echo $current_filter === 'all' ? 'btn-primary active' : 'btn-outline-primary'; ?>" data-filter="all">All</a>
+                        <a href="<?php echo esc_url( $base_url ); ?>" class="btn btn-sm <?php echo $current_filter === 'all' ? 'btn-primary active' : 'btn-outline-primary'; ?>">All</a>
                     </li>
-                    <?php foreach ( $filter_tabs as $slug => $label ) : ?>
+                    <?php if ( ! is_wp_error( $filter_tabs ) ) : foreach ( $filter_tabs as $term ) : ?>
                         <li class="list-inline-item">
-                            <a href="<?php echo esc_url( add_query_arg( 'filter', $slug, $base_url ) ); ?>" class="library-filter-btn btn btn-sm <?php echo $current_filter === $slug ? 'btn-primary active' : 'btn-outline-primary'; ?>" data-filter="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $label ); ?></a>
+                            <a href="<?php echo esc_url( add_query_arg( 'filter', $term->slug, $base_url ) ); ?>" class="btn btn-sm <?php echo $current_filter === $term->slug ? 'btn-primary active' : 'btn-outline-primary'; ?>"><?php echo esc_html( $term->name ); ?></a>
                         </li>
-                    <?php endforeach; ?>
+                    <?php endforeach; endif; ?>
                 </ul>
             </div>
         </div>
@@ -58,15 +64,8 @@
         <div class="row g-4" id="library-grid">
             <?php if ( $library_query->have_posts() ) : while ( $library_query->have_posts() ) : $library_query->the_post();
                 $library_cats = get_the_terms( get_the_ID(), 'library-cat' );
-                $filter_keys  = array();
-                if ( $library_cats && ! is_wp_error( $library_cats ) ) {
-                    foreach ( $library_cats as $cat ) {
-                        $filter_keys[] = $cat->slug;
-                    }
-                }
-                $filter_attr = implode( ' ', $filter_keys );
             ?>
-                <div class="col-lg-4 col-md-6 mb-4 grid-item" data-filter="<?php echo esc_attr( $filter_attr ); ?>">
+                <div class="col-lg-4 col-md-6 mb-4 grid-item">
                     <div class="card h-100 shadow-sm border-0">
                         <div class="position-relative overflow-hidden" onclick="location.href='<?php the_permalink(); ?>'" style="cursor:pointer">
                             <?php if ( has_post_thumbnail() ) : ?>
@@ -94,52 +93,39 @@
             <?php endif; ?>
         </div>
 
+        <?php
+        $paginated_base = $current_filter !== 'all'
+            ? add_query_arg( 'filter', $current_filter, $base_url )
+            : $base_url;
+
+        $pagination = paginate_links( array(
+            'base'      => add_query_arg( 'paged', '%#%', $paginated_base ),
+            'format'    => '',
+            'current'   => $paged,
+            'total'     => $library_query->max_num_pages,
+            'prev_text' => '&laquo;',
+            'next_text' => '&raquo;',
+            'type'      => 'array',
+        ) );
+        ?>
+
+        <?php if ( $pagination ) : ?>
+            <nav class="mt-4" aria-label="Library pagination">
+                <ul class="pagination justify-content-center flex-wrap">
+                    <?php foreach ( $pagination as $link ) : ?>
+                        <li class="page-item<?php echo strpos( $link, 'current' ) !== false ? ' active' : ''; ?>">
+                            <?php echo str_replace(
+                                array( '<a ',    '<span ' ),
+                                array( '<a class="page-link" ', '<span class="page-link" ' ),
+                                $link
+                            ); ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
+
     </div>
 </div>
-
-<script>
-(function () {
-    var btns  = document.querySelectorAll('.library-filter-btn');
-    var items = document.querySelectorAll('#library-grid .grid-item');
-
-    function applyFilter(filter) {
-        btns.forEach(function (b) {
-            var isActive = b.getAttribute('data-filter') === filter;
-            b.classList.toggle('active', isActive);
-            b.classList.toggle('btn-primary', isActive);
-            b.classList.toggle('btn-outline-primary', !isActive);
-        });
-        items.forEach(function (item) {
-            var keys = item.getAttribute('data-filter').split(' ');
-            item.style.display = (filter === 'all' || keys.indexOf(filter) !== -1) ? '' : 'none';
-        });
-    }
-
-    // Apply filter from URL on load
-    var params = new URLSearchParams(window.location.search);
-    applyFilter(params.get('filter') || 'all');
-
-    btns.forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            var filter = btn.getAttribute('data-filter');
-            var url = new URL(window.location.href);
-            if (filter === 'all') {
-                url.searchParams.delete('filter');
-            } else {
-                url.searchParams.set('filter', filter);
-            }
-            history.pushState(null, '', url.toString());
-            applyFilter(filter);
-        });
-    });
-
-    // Handle browser back/forward
-    window.addEventListener('popstate', function () {
-        var p = new URLSearchParams(window.location.search);
-        applyFilter(p.get('filter') || 'all');
-    });
-}());
-</script>
 
 <?php get_footer(); ?>
